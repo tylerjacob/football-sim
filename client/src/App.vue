@@ -1,13 +1,30 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
-  </div>
+<div id="app">
+  <v-app>
+    <h1>MAIN CONTENT</h1>
+    <v-container class="ml-0 pl-0">
+      <Timeline></Timeline>
+      <FieldDisplay></FieldDisplay>
+      <!-- <router-view/> -->
+    </v-container>
+  </v-app>
+</div>
 </template>
 
 <script>
+import Timeline from '@/components/Timeline.vue'
+import OptionsMenu from '@/components/Menu.vue'
+import FieldDisplay from '@/components/FieldDisplay.vue'
+// import Register from '@/components/Register.vue'
+// import Menu from '@/components/Menu.vue'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'Timeline': Timeline,
+    'OptionsMenu': OptionsMenu,
+    'FieldDisplay': FieldDisplay
+  }
 }
 </script>
 
@@ -17,7 +34,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  padding: 0px;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+div.cotainer.fluid {
+  padding: 0px;
 }
 </style>
