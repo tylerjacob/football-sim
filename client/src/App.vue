@@ -1,28 +1,24 @@
 <template>
 <div id="app">
   <v-app>
-    <h1>MAIN CONTENT</h1>
-    <v-container class="ml-0 pl-0">
       <Timeline></Timeline>
-      <FieldDisplay></FieldDisplay>
-      <!-- <router-view/> -->
-    </v-container>
+      <FieldDisplay/>
+      <router-view/>
   </v-app>
 </div>
 </template>
 
 <script>
 import Timeline from '@/components/Timeline.vue'
-import OptionsMenu from '@/components/Menu.vue'
+import Menu from '@/components/Menu.vue'
 import FieldDisplay from '@/components/FieldDisplay.vue'
 // import Register from '@/components/Register.vue'
-// import Menu from '@/components/Menu.vue'
 
 export default {
   name: 'App',
   components: {
     'Timeline': Timeline,
-    'OptionsMenu': OptionsMenu,
+    'Menu': Menu,
     'FieldDisplay': FieldDisplay
   }
 }

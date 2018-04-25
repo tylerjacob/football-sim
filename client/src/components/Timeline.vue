@@ -1,4 +1,5 @@
 <template>
+<div id="timeline">
   <div id="top-bar" width="100px">
     <v-toolbar fixed height="80px;" color="blue-grey darken-3">
     <v-btn
@@ -26,41 +27,22 @@
       step="0">
     </v-slider>
   </v-toolbar>
-  <v-navigation-drawer
-  id="nav-drawer"
-  v-model="drawer"
-  dark>
-    <v-list>
-      
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-      <h1>-</h1>
-       <OptionsMenu></OptionsMenu>
-    </v-list>
-  </v-navigation-drawer>
+  </div>
+  <div id="nav-bar">
+    <v-navigation-drawer
+    v-model="drawer"
+    light
+    absolute
+    height="600px">
+      <Menu></Menu>
+    </v-navigation-drawer>
+  </div>
   </div>
 </template>
 
 <script>
-import OptionsMenu from '@/components/Menu.vue'
+import Menu from '@/components/Menu.vue'
+
 export default {
   data () {
     return {
@@ -68,15 +50,26 @@ export default {
       value1: 0,
       hasClick: true,
       components: {
-        'OptionsMenu': OptionsMenu
-      } 
+        'Menu': Menu
+      },
     }
   },
   methods: {
-    hasClick: (click) => {
-      this.isLoading = !this.isLoading
-    }
-  }
+    useJson: (result) => {
+      console.log(result, "IT WORKS")
+    },
+    getJson: () => {
+    let files = document.getElementById('selectFiles').files
+        if (files.length <= 0) {
+        return false
+        }
+    
+    const reader = new FileReader();
+    reader.onload = e => console.log(e.target.result);
+    reader.readAsText(files);
+    // let result = JSON.parse(fr.result)
+}
+}
 }
 </script>
 
@@ -93,11 +86,14 @@ div.btn__content {
 }
 
 #timeline {
-  padding-left: 0px;
+  z-index: 2000;
+  width: 0px;
+  height: 0px;
 }
 
-#nav-drawer {
-  opacity: 70%;
+#nav-bar {
+  opacity: .7;
+  width: 500px;
 }
 
 #top-bar {

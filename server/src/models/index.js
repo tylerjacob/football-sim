@@ -22,6 +22,6 @@ fs
   })
 
 db.sequelize = sequelize
-db.Sequelize = sequelize
+db.Sequelize = Sequelize
 
 module.exports = db

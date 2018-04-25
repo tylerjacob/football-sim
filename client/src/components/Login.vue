@@ -34,15 +34,15 @@ import AuthenticationService from '@/services/AuthenticationService.js'
 export default {
   data () {
     return {
-      email: 'abc@gmail.com',
-      password: 'password',
+      email: '',
+      password: '',
       error: null
     }
   },
   methods: {
-    async register () {
+    async login () {
       try {
-        await AuthenticationService.register({
+        await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
