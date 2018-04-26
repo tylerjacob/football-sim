@@ -10,7 +10,6 @@
 
 <script>
 import Timeline from '@/components/Timeline.vue'
-import Menu from '@/components/Menu.vue'
 import FieldDisplay from '@/components/FieldDisplay.vue'
 // import Register from '@/components/Register.vue'
 
@@ -18,7 +17,6 @@ export default {
   name: 'App',
   components: {
     'Timeline': Timeline,
-    'Menu': Menu,
     'FieldDisplay': FieldDisplay
   }
 }

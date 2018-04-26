@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Register from '@/components/Register'
 import Timeline from '@/components/Timeline'
-import Menu from '@/components/Menu'
 import Login from '@/components/Login'
 
 Vue.use(Router)
