@@ -50,163 +50,6 @@ export default {
       }
     }
 
-    // Field Set Up
-    var outerfieldlines =  {
-      x: [-26.6, -26.6,26.6, 26.6, -26.6],
-      y: [60,-60, -60, 60, 60],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 5
-  },
-      name: 'outer field line',
-      size: 24
-    }
-
-    var yd0 = {
-      x: [-26.6, 26.6],
-      y: [50, 50],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 5
-  },
-      name: '0 yd',
-      size: 14
-    }
-
-    var yd10 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [45, 45, 40, 40],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: ' 10yd',
-      size: 14
-    }
-
-    var yd20 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [35, 35, 30, 30],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '20yd',
-      size: 14
-    }
-
-    var yd30 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [25, 25, 20, 20],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '30yd',
-      size: 14
-    }
-
-    var yd40 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [15, 15, 10, 10],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '40yd',
-      size: 14
-    }
-
-    var yd50 = {
-      x: [-26.6, 26.6, 26.6, -26.6, -26.6, 26.6],
-      y: [5, 5, 0, 0, -5, -5],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '50yd',
-      size: 14
-    }
-
-    var ydneg40 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [-15, -15, -10, -10],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '-40yd',
-      size: 14
-    }
-
-    var ydneg30 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [-25, -25, -20, -20],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '-30yd',
-      size: 14
-    }
-
-    var ydneg20 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [-35, -35, -30, -30],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '-20yd',
-      size: 14
-    }
-
-    var ydneg10 = {
-      x: [-26.6, 26.6, 26.6, -26.6],
-      y: [-45, -45, -40, -40],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 2.5
-  },
-      name: '-10yd',
-      size: 14
-    }
-
-    var ydneg0 = {
-      x: [26.6, -26.6],
-      y: [-50, -50],
-      mode: 'lines',
-      type: 'scatter',
-      line: {
-    color: '#ffffff',
-    width: 5
-  },
-      name: '0yd',
-      size: 14
-    }
-
     var offense = {
       mode: 'markers+text',
       type: 'scatter',
@@ -229,127 +72,272 @@ export default {
         size: 20
       }
     }
+    // ===================================
+    //            Field Set Up
+    // ===================================
+    var outerfieldlines =  {
+      x: [-26.6, -26.6,26.6, 26.6, -26.6],
+      y: [60,-60, -60, 60, 60],
+      mode: 'lines',
+      type: 'scatter',
+      line: {
+    color: '#ffffff',
+    width: 5
+  },
+      name: 'outer field line',
+      size: 24
+    }
 
-    // far left hash function
-    const masterShapeHolder = []
-    let HashMachine = () => {
-    var cnt = 0
-    for(var i =0; i < 101; i++){
-      console.log("does this even run?")
-        masterShapeHolder.push({
-          type: 'rect',
-          xref: 'x',
-          x0: -26.5,
-          x1: -26,
-          yref: 'y',
-          y0: -50 + cnt,
-          y1: -50.1 + cnt,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-        {
-          type: 'rect',
-          xref: 'x',
-          x0: 26.5,
-          x1: 26,
-          yref: 'y',
-          y0: -50 + cnt,
-          y1: -50.1 + cnt,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-        {
-          type: 'rect',
-          xref: 'x',
-          x0: 2.5,
-          x1: 2,
-          yref: 'y',
-          y0: -50 + cnt,
-          y1: -50.1 + cnt,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-        {
-          type: 'rect',
-          xref: 'x',
-          x0: -2.5,
-          x1: -2,
-          yref: 'y',
-          y0: -50 + cnt,
-          y1: -50.1 + cnt,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        }
-        )
-        cnt += 1
+// Creating Hash markers
+const masterShapeHolder = []
+let HashMachine = () => {
+  var cnt = 0
+  for(var i =0; i < 101; i++){
+    masterShapeHolder.push({
+      type: 'rect',
+      layer: 'below',
+      xref: 'x',
+      x0: -26.4,
+      x1: -26,
+      yref: 'y',
+      y0: -50 + cnt,
+      y1: -50.05 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+    },
+    {
+      type: 'rect',
+      xref: 'x',
+      layer: 'below',
+      x0: 26.4,
+      x1: 26,
+      yref: 'y',
+      y0: -50 + cnt,
+      y1: -50.05 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+    },
+    {
+      type: 'rect',
+      xref: 'x',
+      layer: 'below',
+      x0: 2.4,
+      x1: 2,
+      yref: 'y',
+      y0: -50 + cnt,
+      y1: -50.05 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+    },
+    {
+      type: 'rect',
+      xref: 'x',
+      x0: -2.4,
+      x1: -2,
+      layer: 'below',
+      yref: 'y',
+      y0: -50 + cnt,
+      y1: -50.05 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
       }
     }
-
-    HashMachine()
-    var layout = {
-    shapes: masterShapeHolder,
-    paper_bgcolor: 'rgb(33, 132, 39)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-      xaxis: {
-        range: [-26.6, 26.6],
-        showgrid: false,
-        zeroline: false,
-        ticks: '',
-        showline: true,
-        autotick: true,
-        showticklabels: false
-      },
-      yaxis: {
-        range: [-60, 60],
-        showgrid: true,
-        zeroline: false,
-        ticks: '',
-        showline: true,
-        autotick: true,
-        showticklabels: false,
-        scaleanchor: 'x',
-        scaleratio: .5
-      },
-      margin: {
-          t: 0, //top margin
-          l: 0, //left margin
-          r: 0, //right margin
-          b: 0 //bottom margin
-      },
-      showlegend: false,
-      images: 
-        [{
-          x: -26.6,
-          y: 60,
-          sizex: 53.33,
-          sizey: 120,
-          source : "",
-          sizing: 'stretch',
-          xref: 'x',
-          yref: 'y',
-          layer: 'below'
-        }]
-    }
-    var data = [ 
-    outerfieldlines,
-    yd0, yd10, yd20, yd30, yd40, yd50, ydneg40, ydneg30, ydneg20, ydneg10, ydneg0,
-    offense, defense, qb, ball
-    ]
-    Plotly.plot(
-      gd, data, layout
     )
-    window.onresize = function () {
-      Plotly.Plots.resize(gd);
+    cnt += 1
+  }
+}
+  masterShapeHolder.push({
+        type: 'rect',
+        xref: 'x',
+        x0: 0,
+        x1: 0.2,
+        yref: 'y',
+        layer: 'below',
+        y0: 48,
+        y1: 47.95,
+        fillcolor: '#ffffff',
+        line: {
+          color: "#ffffff"
+        }},{
+        type: 'rect',
+        xref: 'x',
+        x0: 0.2,
+        layer: 'below',
+        x1: 0,
+        yref: 'y',
+        y0: -48,
+        y1: -47.95,
+        fillcolor: '#ffffff',
+        line: {
+          color: "#ffffff"
+        }})
+  HashMachine()
+
+  //yardLines
+let YardMachine = () => {
+  var cnt = 0
+  for(var i = 0; i <= 20; i++){
+  console.log("does this even run?")
+    masterShapeHolder.push({
+      type: 'rect',
+      layer: 'below',
+      xref: 'x',
+      x0: -26.6,
+      x1: 26.6,
+      yref: 'y',
+      y0: -50 + cnt,
+      y1: -50.05 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+    },
+    {
+      type: 'rect',
+      layer: 'below',
+      xref: 'x',
+      x0: 2,
+      x1: 2.05,
+      yref: 'y',
+      y0: -44.7 + cnt,
+      y1: -45.3 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+      },
+      {
+      type: 'rect',
+      layer: 'below',
+      xref: 'x',
+      x0: -2,
+      x1: -2.05,
+      yref: 'y',
+      y0: -44.7 + cnt,
+      y1: -45.3 + cnt,
+      fillcolor: '#ffffff',
+      line: {
+        color: "#ffffff"
+      }
+    })
+    cnt += 5
+  }
+}
+YardMachine()
+
+const masterNumHolder = []
+let NumMachine = () => {
+  var cnt = 0
+  var cnt1 = 0
+  var fieldNumsR = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_left.png"]
+  var fieldNumsL = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_right.png"]
+  for(var i = 0; i < 9; i++){
+  console.log("does this even run?")
+    masterNumHolder.push({
+        layer: 'above',
+        x: 12,
+        y: -37.6 + cnt,
+        sizex: 2,
+        sizey: 2,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/0_left.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+      },
+      {
+        layer: 'above',
+        x: -14,
+        y: -40.4 + cnt,
+        sizex: 2,
+        sizey: 2,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/0_left.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+      },{
+        layer: 'below',
+        x: 12,
+        y: -40.4 + cnt,
+        sizex: 2,
+        sizey: 2,
+        source : fieldNumsR[cnt1],
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+      },
+      {
+        layer: 'below',
+        x: -14,
+        y: -37.6 + cnt,
+        sizex: 2,
+        sizey: 2,
+        source : fieldNumsL[cnt1],
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+      })
+    cnt += 10
+    cnt1++
+    if(cnt1 > 4){
+      fieldNumsL.reverse()
+      fieldNumsR.reverse()
+      cnt1 = 1
     }
-  },
+  }
+}
+NumMachine()
+  // Layout
+  var layout = {
+  paper_bgcolor: '#005b24',
+  plot_bgcolor: 'rgba(0,0,0,0)',
+    xaxis: {
+      range: [-26.6, 26.6],
+      showgrid: false,
+      zeroline: false,
+      ticks: '',
+      showline: true,
+      autotick: true,
+      showticklabels: false
+    },
+    yaxis: {
+      range: [-60, 60],
+      showgrid: false,
+      zeroline: false,
+      ticks: '',
+      showline: true,
+      autotick: true,
+      showticklabels: false,
+      scaleanchor: 'x',
+      scaleratio: .5
+    },
+    margin: {
+        t: 0, //top margin
+        l: 0, //left margin
+        r: 0, //right margin
+        b: 0 //bottom margin
+    },
+    showlegend: false,
+    images: masterNumHolder,
+    shapes: masterShapeHolder
+  }
+  var data = [ 
+  outerfieldlines,
+  offense, defense, qb, ball
+  ]
+  Plotly.plot(
+    gd, data, layout
+  )
+  window.onresize = function () {
+    Plotly.Plots.resize(gd);
+  }
+},
   data () {
     return {
     }
@@ -368,7 +356,8 @@ svg.main-svg {
 }
 
 #contain {
-  padding-top: 200px;
-  margin: 0px;
+  margin-top: 80px;
+  padding: 0px;
+  width: 100%;
 }
 </style>
