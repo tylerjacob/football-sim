@@ -8,26 +8,27 @@
 
 <script>
 import Plotly from 'plotly.js'
+import Timeline from '@/components/Timeline.vue'
+import Menu from '@/components/Menu.vue'
+
 export default {
   created () {
   },
   mounted () {
-
-  var d3 = Plotly.d3;
-  var WIDTH_IN_PERCENT_OF_PARENT = 100
-  var HEIGHT_IN_PERCET_OF_PARENT = 100
-  var gd3 = d3.select('#contain')
-  .append('div')
-  .style({
-    width: WIDTH_IN_PERCENT_OF_PARENT + '%',
-    'margin':0,
-    height: HEIGHT_IN_PERCET_OF_PARENT + 'vh',
-    'padding': 0
+    let d3 = Plotly.d3;
+    let WIDTH_IN_PERCENT_OF_PARENT = 100
+    let HEIGHT_IN_PERCET_OF_PARENT = 100
+    let gd3 = d3.select('#contain')
+    .append('div')
+    .style({
+      width: WIDTH_IN_PERCENT_OF_PARENT + '%',
+      'margin':0,
+      height: HEIGHT_IN_PERCET_OF_PARENT + 'vh',
+      'padding': 0
   })
 
-  var gd = gd3.node();
-
-    var qb = {
+  let gd = gd3.node()
+    let qb = {
       mode: 'markers+text',
       type: 'scatter',
       name: 'QB',
@@ -38,7 +39,7 @@ export default {
         size: 24
       }
     }
-    var ball = {
+    let ball = {
       mode: 'markers+text',
       type: 'scatter',
       name: 'Ball',
@@ -50,7 +51,7 @@ export default {
       }
     }
 
-    var offense = {
+    let offense = {
       mode: 'markers+text',
       type: 'scatter',
       name: 'Offense',
@@ -61,7 +62,7 @@ export default {
         size: 20
       }
     }
-    var defense = {
+    let defense = {
       mode: 'markers+text',
       type: 'scatter',
       name: 'Defense',
@@ -75,7 +76,7 @@ export default {
     // ===================================
     //            Field Set Up
     // ===================================
-    var outerfieldlines =  {
+    let outerfieldlines =  {
       x: [-26.6, -26.6,26.6, 26.6, -26.6],
       y: [60,-60, -60, 60, 60],
       mode: 'lines',
@@ -86,73 +87,73 @@ export default {
   },
       name: 'outer field line',
       size: 24
-    }
+}
 
 // Creating Hash markers
-const masterShapeHolder = []
-let HashMachine = () => {
-  var cnt = 0
-  for(var i =0; i < 101; i++){
-    masterShapeHolder.push({
-      type: 'rect',
-      layer: 'below',
-      xref: 'x',
-      x0: -26.4,
-      x1: -26,
-      yref: 'y',
-      y0: -50 + cnt,
-      y1: -50.05 + cnt,
-      fillcolor: '#ffffff',
-      line: {
-        color: "#ffffff"
-      }
-    },
-    {
-      type: 'rect',
-      xref: 'x',
-      layer: 'below',
-      x0: 26.4,
-      x1: 26,
-      yref: 'y',
-      y0: -50 + cnt,
-      y1: -50.05 + cnt,
-      fillcolor: '#ffffff',
-      line: {
-        color: "#ffffff"
-      }
-    },
-    {
-      type: 'rect',
-      xref: 'x',
-      layer: 'below',
-      x0: 2.4,
-      x1: 2,
-      yref: 'y',
-      y0: -50 + cnt,
-      y1: -50.05 + cnt,
-      fillcolor: '#ffffff',
-      line: {
-        color: "#ffffff"
-      }
-    },
-    {
-      type: 'rect',
-      xref: 'x',
-      x0: -2.4,
-      x1: -2,
-      layer: 'below',
-      yref: 'y',
-      y0: -50 + cnt,
-      y1: -50.05 + cnt,
-      fillcolor: '#ffffff',
-      line: {
-        color: "#ffffff"
+    const masterShapeHolder = []
+    let HashMachine = () => {
+      let cnt = 0
+      for(let i =0; i < 101; i++){
+        masterShapeHolder.push({
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -26.4,
+          x1: -26,
+          yref: 'y',
+          y0: -50 + cnt,
+          y1: -50.05 + cnt,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        {
+          type: 'rect',
+          xref: 'x',
+          layer: 'below',
+          x0: 26.4,
+          x1: 26,
+          yref: 'y',
+          y0: -50 + cnt,
+          y1: -50.05 + cnt,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        {
+          type: 'rect',
+          xref: 'x',
+          layer: 'below',
+          x0: 2.4,
+          x1: 2,
+          yref: 'y',
+          y0: -50 + cnt,
+          y1: -50.05 + cnt,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        {
+          type: 'rect',
+          xref: 'x',
+          x0: -2.4,
+          x1: -2,
+          layer: 'below',
+          yref: 'y',
+          y0: -50 + cnt,
+          y1: -50.05 + cnt,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        }
+        )
+        cnt += 1
       }
     }
-    )
-    cnt += 1
-  }
-}
   masterShapeHolder.push({
         type: 'rect',
         xref: 'x',
@@ -182,8 +183,8 @@ let HashMachine = () => {
 
   //yardLines
 let YardMachine = () => {
-  var cnt = 0
-  for(var i = 0; i <= 20; i++){
+  let cnt = 0
+  for(let i = 0; i <= 20; i++){
   console.log("does this even run?")
     masterShapeHolder.push({
       type: 'rect',
@@ -198,8 +199,9 @@ let YardMachine = () => {
       line: {
         color: "#ffffff"
       }
-    },
-    {
+    })
+    if(i < 18){
+      masterShapeHolder.push({
       type: 'rect',
       layer: 'below',
       xref: 'x',
@@ -225,8 +227,9 @@ let YardMachine = () => {
       fillcolor: '#ffffff',
       line: {
         color: "#ffffff"
-      }
-    })
+      }}
+      )
+    }
     cnt += 5
   }
 }
@@ -234,11 +237,11 @@ YardMachine()
 
 const masterNumHolder = []
 let NumMachine = () => {
-  var cnt = 0
-  var cnt1 = 0
-  var fieldNumsR = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_left.png"]
-  var fieldNumsL = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_right.png"]
-  for(var i = 0; i < 9; i++){
+  let cnt = 0
+  let cnt1 = 0
+  const fieldNumsR = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_left.png"]
+  const fieldNumsL = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_right.png"]
+  for(let i = 0; i < 9; i++){
   console.log("does this even run?")
     masterNumHolder.push({
         layer: 'above',
@@ -292,22 +295,110 @@ let NumMachine = () => {
     }
   }
 }
+
+let triangleMachine = () => {
+  let cnt = 0
+  for(let i = 1; i < 5; i++){
+     masterNumHolder.push({
+        layer: 'below',
+        x: -13.5,
+        y: 14 + cnt,
+        sizex: .8,
+        sizey: 1,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-up.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+  },
+  {
+    
+        layer: 'below',
+        x: 12.5,
+        y: 14 + cnt,
+        sizex: .8,
+        sizey: 1,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-up.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+  },
+  {
+        layer: 'below',
+        x: -13.5,
+        y: -43 + cnt,
+        sizex: .8,
+        sizey: 1,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-down.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+  },
+  {
+    
+        layer: 'below',
+        x: 12.5,
+        y: -43 + cnt,
+        sizex: .8,
+        sizey: 1,
+        source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-down.png",
+        sizing: 'stretch',
+        xref: 'x',
+        yref: 'y'
+  }) 
+   cnt += 10
+  }
+}
+triangleMachine()
+
 NumMachine()
+
+let frameHolder = []
+const Animator = (jsonFile) => {
+  for(i in jsonFile.length){
+    let playTime = jsonFile[i]
+    frameHolder.push({
+      name: `play + ${i}`,
+      data: [{
+        x: [playTime['Def_P0']['X'], playTime['Def_P1']['X'], playTime['Def_P2']['X'], playTime['Def_P3']['X'], playTime['Def_P4']['X'], playTime['Def_P5']['X'],playTime['Def_P6']['X'], playTime['Def_P7']['X'],playTime['Def_P8']['X'], playTime['Def_P9']['X'],playTime['Def_P10']['X']],
+        y: [playTime['Def_P0']['Y'], playTime['Def_P1']['Y'], playTime['Def_P2']['Y'], playTime['Def_P3']['Y'], playTime['Def_P4']['Y'], playTime['Def_P5']['Y'],playTime['Def_P6']['Y'], playTime['Def_P7']['Y'],playTime['Def_P8']['Y'], playTime['Def_P9']['Y'],playTime['Def_P10']['Y']]
+      },
+      ],
+      marker: {
+        color: 'red',
+        size: 20
+      }},
+      {
+      name: 'offense',
+      data: {
+        x: [playTime['Off_P0']['X'], playTime['Off_P1']['X'], playTime['Off_P2']['X'], playTime['Off_P3']['X'], playTime['Off_P4']['X'], playTime['Off_P5']['X'],playTime['Off_P6']['X'], playTime['Off_P7']['X'],playTime['Off_P8']['X'], playTime['Off_P9']['X']],
+        y: [playTime['Off_P0']['Y'], playTime['Off_P1']['Y'], playTime['Off_P2']['Y'], playTime['Off_P3']['Y'], playTime['Off_P4']['Y'], playTime['Off_P5']['Y'],playTime['Off_P6']['Y'], playTime['Off_P7']['Y'],playTime['Off_P8']['Y'], playTime['Off_P9']['Y']]
+      },  
+    })
+  }
+}
   // Layout
-  var layout = {
+  let layout = {
   paper_bgcolor: '#005b24',
   plot_bgcolor: 'rgba(0,0,0,0)',
+  grid: {
+    domain: {
+      x:[0, 20],
+      y: [0,20]
+    }
+  },
     xaxis: {
       range: [-26.6, 26.6],
       showgrid: false,
+      showlegend: false,
       zeroline: false,
       ticks: '',
       showline: true,
       autotick: true,
+      autosize: true,
       showticklabels: false
     },
     yaxis: {
-      range: [-60, 60],
+      range: [-30, 10],
       showgrid: false,
       zeroline: false,
       ticks: '',
@@ -327,15 +418,15 @@ NumMachine()
     images: masterNumHolder,
     shapes: masterShapeHolder
   }
-  var data = [ 
+  let data = [ 
   outerfieldlines,
   offense, defense, qb, ball
   ]
   Plotly.plot(
-    gd, data, layout
+    gd, data, layout, {displayModeBar: false}
   )
   window.onresize = function () {
-    Plotly.Plots.resize(gd);
+    Plotly.Plots.resize(gd)
   }
 },
   data () {
@@ -345,18 +436,46 @@ NumMachine()
   methods: {
   }
 }
+
+
+//save for later
+// sliders: [{
+//     steps: [{
+//       method: 'animate',
+//       args: [['play1'], {
+//         mode: 'imediate',
+//         frame: {redraw: false, duration: 200},
+//         transition: {duration: 500}
+//       }]
+//     },
+//       {
+//       method: 'animate',
+//       args: [['play2'], {
+//         mode: 'imediate',
+//         frame: {redraw: false, duration: 200},
+//         transition: {duration: 500}
+//       }]
+//       }]
+//   }],
+//   frames: [
+//     {
+//       name: 'play1',
+//       data: [{
+//         x: [],
+//         y: [],
+//         'color': red
+//       }]
+//     }
+//   ]
 </script>
 
 <style scoped>
-svg.main-svg {
-  background-image: url('field-v.png')
-}
 .plot {
   height: 100%;
 }
 
 #contain {
-  margin-top: 80px;
+  margin-top: 40px;
   padding: 0px;
   width: 100%;
 }

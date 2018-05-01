@@ -3,29 +3,22 @@
   <div id="top-bar" width="100px">
     <v-toolbar fixed height="80px;" color="blue-grey darken-3">
     <v-btn
-    menu
     @click.stop="drawer = !drawer"
-    class="play-btn"
     color="blue-grey lighten-5">
       <i class="fas fa-align-justify"></i>
     </v-btn>
     <v-btn
-    class="play-btn"
+    class="menu-btn"
     color="blue-grey lighten-5"
-    @click.stop="hasClick">
-      <i
-      id="play-button"
-      class="fas"
-      v-bind:class="{'fa-play': hasClick, 'fa-pause': !hasClick}">
-      </i>
+    v-on:click="playClicked = !playClicked">
+     <i :class="[ 'fas', {'fa-play': playClicked}, {'fa-pause': playClicked}]"></i>
     </v-btn>
     <v-slider
       dark
-      label= '0:02.3 / 0:14'
+      label= "0:02.12  / 0:14.75"
       class="px-4 pt-4"
       color="blue-grey lighten-5"
       v-model="value1"
-      value="8"
       step="0">
     </v-slider>
   </v-toolbar>
@@ -33,10 +26,10 @@
   <div id="nav-bar">
     <v-navigation-drawer
     v-model="drawer"
-    light
+    dark
     absolute
     height="700px">
-      <h1>y</h1>
+      <h1>-</h1>
       <h1></h1>
       <Menu class="pt-5" id="menu-options"></Menu>
     </v-navigation-drawer>
@@ -47,33 +40,21 @@
 import Menu from '@/components/Menu.vue'
 
 export default {
-  props: {currentTime: '0:03', 
-totalTime: '0:14'},
-  components: {
-        'Menu': Menu
-      },
+  props: {currentTime: 0.03,
+    totalTime: 0.14},
+    components: {
+    'Menu': Menu
+  },
   data () {
     return {
       drawer: null,
-      value1: 0,
-      hasClick: true,
-      name: 'Menu',
+      value1: 12,
+      playClicked: true,
+      name: 'Menu'
     }
   },
   methods: {
-    useJson: (result) => {
-      console.log(result, 'IT WORKS')
-    },
-    getJson: () => {
-      let files = document.getElementById('selectFiles').files
-      if (files.length <= 0) {
-        return false
-      }
-      const reader = new FileReader()
-      reader.onload = e => console.log(e.target.result)
-      reader.readAsText(files)
-    // let result = JSON.parse(fr.result)
-    }
+    
   }
 }
 </script>
@@ -83,7 +64,7 @@ totalTime: '0:14'},
 h1 {
   opacity: 10%;
 }
-.play-btn {
+.menu-btn {
   font-family:  monospace
 }
 div.btn__content {
