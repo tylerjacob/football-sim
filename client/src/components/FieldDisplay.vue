@@ -89,45 +89,51 @@ export default {
       size: 24
 }
 
+const hashWidth = .666
+const hashDistance = 3.08
+const hashHeight = .111
 // Creating Hash markers
     const masterShapeHolder = []
     let HashMachine = () => {
       let cnt = 0
       for(let i =0; i < 101; i++){
+        //side hashes
         masterShapeHolder.push({
           type: 'rect',
           layer: 'below',
           xref: 'x',
-          x0: -26.4,
+          x0: -26 - hashWidth,
           x1: -26,
           yref: 'y',
           y0: -50 + cnt,
-          y1: -50.05 + cnt,
+          y1: -50 - hashHeight + cnt,
           fillcolor: '#ffffff',
           line: {
             color: "#ffffff"
           }
         },
+        //right
         {
           type: 'rect',
           xref: 'x',
           layer: 'below',
-          x0: 26.4,
+          x0: 26 + hashWidth,
           x1: 26,
           yref: 'y',
           y0: -50 + cnt,
-          y1: -50.05 + cnt,
+          y1: -50 - hashHeight + cnt,
           fillcolor: '#ffffff',
           line: {
             color: "#ffffff"
           }
         },
+        //middle hashes
         {
           type: 'rect',
           xref: 'x',
           layer: 'below',
-          x0: 2.4,
-          x1: 2,
+          x0: hashDistance,
+          x1: hashDistance + hashWidth,
           yref: 'y',
           y0: -50 + cnt,
           y1: -50.05 + cnt,
@@ -139,8 +145,8 @@ export default {
         {
           type: 'rect',
           xref: 'x',
-          x0: -2.4,
-          x1: -2,
+          x0:  -hashDistance,
+          x1: -hashDistance - hashWidth,
           layer: 'below',
           yref: 'y',
           y0: -50 + cnt,
@@ -154,6 +160,7 @@ export default {
         cnt += 1
       }
     }
+    // bottom and top mid hash
   masterShapeHolder.push({
         type: 'rect',
         xref: 'x',
@@ -169,8 +176,8 @@ export default {
         }},{
         type: 'rect',
         xref: 'x',
-        x0: 0.2,
         layer: 'below',
+        x0: 0.2,
         x1: 0,
         yref: 'y',
         y0: -48,
@@ -201,12 +208,13 @@ let YardMachine = () => {
       }
     })
     if(i < 18){
+      //inner hashes
       masterShapeHolder.push({
       type: 'rect',
       layer: 'below',
       xref: 'x',
-      x0: 2,
-      x1: 2.05,
+      x0: hashDistance,
+      x1: hashDistance + .05,
       yref: 'y',
       y0: -44.7 + cnt,
       y1: -45.3 + cnt,
@@ -219,8 +227,8 @@ let YardMachine = () => {
       type: 'rect',
       layer: 'below',
       xref: 'x',
-      x0: -2,
-      x1: -2.05,
+      x0: -hashDistance,
+      x1: -hashDistance - .05,
       yref: 'y',
       y0: -44.7 + cnt,
       y1: -45.3 + cnt,
@@ -239,48 +247,55 @@ const masterNumHolder = []
 let NumMachine = () => {
   let cnt = 0
   let cnt1 = 0
+  const numberSize = 1.5
   const fieldNumsR = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_left.png", "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_left.png"]
   const fieldNumsL = ["http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/1_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/2_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/3_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/4_right.png","http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/5_right.png"]
   for(let i = 0; i < 9; i++){
   console.log("does this even run?")
     masterNumHolder.push({
+//zeros
+      //right
         layer: 'above',
         x: 12,
-        y: -37.6 + cnt,
-        sizex: 2,
-        sizey: 2,
+        y: -38.2 + cnt,
+        sizex: numberSize,
+        sizey: numberSize,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/0_left.png",
         sizing: 'stretch',
         xref: 'x',
         yref: 'y'
       },
+      //left
       {
         layer: 'above',
         x: -14,
         y: -40.4 + cnt,
-        sizex: 2,
-        sizey: 2,
+        sizex: numberSize,
+        sizey: numberSize,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/0_left.png",
         sizing: 'stretch',
         xref: 'x',
         yref: 'y'
       },{
+// other numbers
+      //right
         layer: 'below',
         x: 12,
         y: -40.4 + cnt,
-        sizex: 2,
-        sizey: 2,
+        sizex: numberSize,
+        sizey: numberSize,
         source : fieldNumsR[cnt1],
         sizing: 'stretch',
         xref: 'x',
         yref: 'y'
       },
+      //left
       {
         layer: 'below',
         x: -14,
-        y: -37.6 + cnt,
-        sizex: 2,
-        sizey: 2,
+        y: -38.2 + cnt,
+        sizex: numberSize,
+        sizey: numberSize,
         source : fieldNumsL[cnt1],
         sizing: 'stretch',
         xref: 'x',
@@ -301,8 +316,8 @@ let triangleMachine = () => {
   for(let i = 1; i < 5; i++){
      masterNumHolder.push({
         layer: 'below',
-        x: -13.5,
-        y: 14 + cnt,
+        x: -13.7,
+        y: 13.4 + cnt,
         sizex: .8,
         sizey: 1,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-up.png",
@@ -313,8 +328,8 @@ let triangleMachine = () => {
   {
     
         layer: 'below',
-        x: 12.5,
-        y: 14 + cnt,
+        x: 12.4,
+        y: 13.4 + cnt,
         sizex: .8,
         sizey: 1,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-up.png",
@@ -324,8 +339,8 @@ let triangleMachine = () => {
   },
   {
         layer: 'below',
-        x: -13.5,
-        y: -43 + cnt,
+        x: -13.7,
+        y: -42.4 + cnt,
         sizex: .8,
         sizey: 1,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-down.png",
@@ -336,8 +351,8 @@ let triangleMachine = () => {
   {
     
         layer: 'below',
-        x: 12.5,
-        y: -43 + cnt,
+        x: 12.4,
+        y: -42.4 + cnt,
         sizex: .8,
         sizey: 1,
         source : "http://ec2-13-58-111-5.us-east-2.compute.amazonaws.com:3838/vts-formations/triangle-down.png",
@@ -378,7 +393,7 @@ const Animator = (jsonFile) => {
 }
   // Layout
   let layout = {
-  paper_bgcolor: '#005b24',
+  paper_bgcolor: '#1b7c00',
   plot_bgcolor: 'rgba(0,0,0,0)',
   grid: {
     domain: {
@@ -388,25 +403,25 @@ const Animator = (jsonFile) => {
   },
     xaxis: {
       range: [-26.6, 26.6],
-      showgrid: false,
+      showgrid: true,
       showlegend: false,
       zeroline: false,
       ticks: '',
       showline: true,
       autotick: true,
-      autosize: true,
+      hoverlabel: true,
       showticklabels: false
+      
     },
     yaxis: {
       range: [-30, 10],
-      showgrid: false,
+      showgrid: true,
+      showlegend: false,
       zeroline: false,
       ticks: '',
       showline: true,
       autotick: true,
-      showticklabels: false,
-      scaleanchor: 'x',
-      scaleratio: .5
+      showticklabels: false
     },
     margin: {
         t: 0, //top margin

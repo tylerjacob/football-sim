@@ -1,38 +1,73 @@
 <template>
   <div>
-    <v-list id="menu">
-      <input type="file" class="pl-4 pt-3" @change="loadTextFromFile" id="selectFiles"/>
-      <br>
-      <v-btn id="import">Import</v-btn>
-      <textarea id="result"></textarea>
-      <v-card>
-        <template slot="items">
-        </template>
-      </v-card>
-      </v-list>
+    <v-list class="menu">
+    <input type="file" @change="loadFile" class="pl-4 pt-3" id="selectFiles"/>
+    <br>
+    <v-btn id="import">Import</v-btn>
+    <textarea id="result"></textarea>
+    <v-card>
+      <template slot="items">
+      </template>
+    </v-card>
+    </v-list>
   </div>
 </template>
 
 <script>
 export default {
-  data: {
+  data() {
+    return {
+      file: {}
+    }
   },
   methods: {
-    loadTextFromFile: () => {
-	  var files = document.getElementById('selectFiles').files;
-    if (files.length <= 0) {
-      return false;
+    XYDirection (raw) {
+    let plist = []
+    for(var i of raw['playertrackingdata'].entries()){
+        //initialize players
+        player = {}
+        player['playerid'] = j['playerid']
+        //calculate minimum sim time
+        let mint = () => {
+            for(p of j['playertracking'].entries()){
+                Math.min(q['sim_time'])
+        }}
+        //initialize tracking
+        let tracking = []
+        for(var m of j['playertracking'].entries()){
+            //# initialize point
+            let loc = {}
+            //  calculate locations
+            loc['x'] = -(n['leftshoulder_x']+n['rightshoulder_x']+n['back_x'])/3/91.44
+            loc['y'] = (n['leftshoulder_x']+n['rightshoulder_x']+n['back_x'])/3/91.44
+            loc['dir'] = Orientation(n['leftshoulder_x'],n['leftshoulder_y'],
+               n['rightshoulder_x'],n['leftshoulder_y'])
+            loc['time'] = n['sim_time']-mint
+            tracking.push(loc)
+        }
+        // add tracking data
+        player['playertracking'] = tracking
     }
-    var fr = new FileReader()
-    fr.readAsText(files.item(0))
-    document.getElementById('import').addEventListener('click', function(){
-      var jsonFile = JSON.parse(fr.result)
-      console.log(jsonFile)
-      return jsonFile
-    })
-    return jsonFile
+    plist.push(player)
+    // amend large data section
+    raw['playertrackingdata'] = plist
+
+    //return json
+    console.log(raw)
+    return raw
+    },
+
+    loadFile (e) {
+    let file = e.target.files[0]
+    console.log(e)
+    console.log(file)
+    var reader = new window.FileReader()
+    reader.onload = (e) => {
+      console.log(e)
+      console.log(reader)
+      reader.readAsText(file)
+    }
   }
-  
 },
   drawer: null
 }
@@ -43,8 +78,28 @@ export default {
     margin-left: 10px;
     font-family:  monospace
   }
-  #menu {
+  .menu {
     position: relative;
     z-index: 25;
   }
+
+  .text-reader {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  z-index: 26;
+
+  /* Fancy button style 😎 */
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.text-reader input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+  opacity: 0;
+}
 </style>
