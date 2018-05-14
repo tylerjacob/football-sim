@@ -1,9 +1,10 @@
 <template>
 <div id="app">
   <v-app>
-      <Timeline></Timeline>
-      <FieldDisplay/>
-      <router-view/>
+      <Timeline ></Timeline>
+      <FieldDisplay
+      v-if="trackingData !== false"/>
+      <!-- <router-view/> -->
   </v-app>
 </div>
 </template>
@@ -11,6 +12,7 @@
 <script>
 import Timeline from '@/components/Timeline.vue'
 import FieldDisplay from '@/components/FieldDisplay.vue'
+import {mapGetters} from 'vuex'
 // import Register from '@/components/Register.vue'
 
 export default {
@@ -18,6 +20,16 @@ export default {
   components: {
     'Timeline': Timeline,
     'FieldDisplay': FieldDisplay
+  },
+  computed: {
+    ...mapGetters({
+      sliderTime: 'sliderTime',
+      btnState: 'btnState',
+      trackingData: 'trackingData',
+      maxTime: 'maxTime'
+    })
+  },
+  methods: {
   }
 }
 </script>

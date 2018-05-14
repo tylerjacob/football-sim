@@ -1,0 +1,19 @@
+ loadTextFromFile (ev) {
+    const file = ev.target.files[0]
+    const reader = new FileReader()
+    reader.onload = e => this.$emit("load", e.target.result)
+    let test = reader.readAsText(file)
+    let realtest = JSON.parse(test)
+    console.log(realtest)
+  }
+
+
+  video controls 
+browse select folder
+grab first file by date
+send json location to python backend for calculations
+send AJAX request to python for calculations
+
+first file in folder or random file
+animation on seperate tab
+player routes and jersey numbers on tab.
