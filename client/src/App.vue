@@ -1,7 +1,7 @@
 <template>
 <div id="app">
   <v-app>
-      <Timeline ></Timeline>
+    <Menu id="menu"></Menu>
       <FieldDisplay
       v-if="trackingData !== false"/>
       <!-- <router-view/> -->
@@ -10,16 +10,16 @@
 </template>
 
 <script>
-import Timeline from '@/components/Timeline.vue'
 import FieldDisplay from '@/components/FieldDisplay.vue'
 import {mapGetters} from 'vuex'
+import Menu from '@/components/menu/Menu.vue'
 // import Register from '@/components/Register.vue'
 
 export default {
   name: 'App',
   components: {
-    'Timeline': Timeline,
-    'FieldDisplay': FieldDisplay
+    'FieldDisplay': FieldDisplay,
+    'Menu': Menu
   },
   computed: {
     ...mapGetters({
@@ -35,6 +35,10 @@ export default {
 </script>
 
 <style>
+#menu {
+  position: absolute;
+  z-index: 1000000;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -43,7 +47,6 @@ export default {
   padding: 0px;
   color: #2c3e50;
 }
-
 div.cotainer.fluid {
   padding: 0px;
 }

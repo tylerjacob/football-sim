@@ -1,71 +1,73 @@
 <template>
-<div id="timeline">
-  <div id="top-bar" width="100px">
-    <v-toolbar
-    class="timelineBar"
-    absolute
-    height="80px;"
-     color="blue-grey darken-3">
-    <v-btn
-    @click.stop="drawer = !drawer"
-    color="blue-grey lighten-5">
-      <i class="material-icons">menu</i>
-    </v-btn>
-    <v-btn
-    class="menu-btn"
-    color="blue-grey lighten-5"
-    @click="clickMaster"
-    >
-     <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
-    </v-btn>
-    <v-slider
-      v-on:click="sliderClick"
-      v-model="sliderDisplay"
-      @input="changeCurrentValue"
-      :max="maxTime"
-      dark
-      id="slider-bar"
-      class="px-4 pt-4"
-      color="blue-grey lighten-5">
-    </v-slider>
-    <v-flex xs1>
-      <v-text-field
-      :max="maxTime"
-      @input='changeCurrentValue'
-      color='blue-grey lighten-5'
-      :value='sliderDisplay'
-      type='number'
-      :suffix='maxTime.toString()'></v-text-field>
-    </v-flex>
-  </v-toolbar>
-  </div>
-  <div>
+<div>
+  <v-container id="top-bar"
+  :style="{'margin-top':45 + '%'}">
+    <v-layout>
+      <v-toolbar
+          id="timeline-bar"
+          height="50%"
+          color="blue-grey darken-3">
+        <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
+          <i class="material-icons">menu</i>
+        </v-btn>
+        <v-btn class="menu-btn" color="blue-grey lighten-5" @click="clickMaster">
+          <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
+        </v-btn>
+        <v-flex xl10>
+        <vueSlider
+        id="slider"
+        :realTime='true'
+        :tooltip='false'
+        :max="maxTime"
+        @input='changeCurrentValue'
+        v-model="sliderDisplay">
+        </vueSlider>
+        </v-flex>
+        <v-flex xs1>
+        <v-text-field
+          :max="maxTime"
+          @input='changeCurrentValue'
+          color='blue-grey lighten-5'
+          :value='sliderDisplay'
+          type='number'
+          :suffix='maxTime.toString()'></v-text-field>
+        </v-flex>
+      </v-toolbar>
+    </v-layout>
+  </v-container>
+  <div id="nav-bar">
     <v-navigation-drawer
-    id= 'nav-bar'
+    :style="[{'margin-top':15 + '%'},{'opacity':.85}]"
     v-model="drawer"
-    max-height=700
-    dark
+    light
+    id="play-options"
     absolute
-    xs-2>
-      <Menu pt-5 id='menu-options'></Menu>
+    height="550px">
+    <AnimationOptions/>
     </v-navigation-drawer>
   </div>
   </div>
+  
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Menu from '@/components/Menu.vue'
+import vueSlider from 'vue-slider-component'
+import AnimationOptions from '../components/AnimationOptions'
 
 export default {
+  components: {
+    'vueSlider': vueSlider,
+    'AnimationOptions': AnimationOptions
+  },
   watch: {
     btnState: {
       handler (val) {
         if (val === true) {
-          if(this.sliderDisplay === this.maxTime){
+          if (this.sliderDisplay === this.maxTime) {
             this.sliderDisplay = 0
             this.slideTimer = null
           }
-          if(this.maxTime !== 0){
+          if (this.maxTime !== 0) {
             this.displayRunner()
           }
         } else if (val === false) {
@@ -78,13 +80,15 @@ export default {
       deep: true
     },
     sliderDisplay: {
-      handler(val){
-        if(val === this.maxTime){
+      handler (val) {
+        console.log(this.sliderDisplay)
+        if (val === this.maxTime) {
           // this.sliderDisplay = 0
           clearInterval(this.slideTimer)
           this.$store.commit('endPlay')
         }
-      }
+      },
+      deep: true
     }
   },
   computed: {
@@ -94,9 +98,6 @@ export default {
       trackingData: 'trackingData',
       maxTime: 'maxTime'
     })
-  },
-  components: {
-    Menu: Menu
   },
   data () {
     return {
@@ -108,11 +109,11 @@ export default {
     }
   },
   methods: {
-    sliderClick(){
-      this.$store.commit("endPlay")
+    sliderClick () {
+      this.$store.commit('endPlay')
     },
     displayRunner () {
-      this.slideTimer = setInterval(() => this.sliderDisplay+=2, 85)
+      this.slideTimer = setInterval(() => { this.sliderDisplay += 1 }, 15)
     },
     clickMaster () {
       this.playBtn = !this.playBtn
@@ -120,6 +121,7 @@ export default {
       this.$store.commit('clickHandler')
     },
     changeCurrentValue (e) {
+      console.log(e)
       this.sliderDisplay = e
       this.$store.commit('sliderValFromInput', e)
     },
@@ -141,6 +143,7 @@ export default {
 h1 {
   opacity: 10%;
 }
+
 .menu-btn {
   font-family: monospace;
 }
@@ -157,26 +160,25 @@ div.btn__content {
   width: 0px;
 }
 
-.timelineBar {
-  top: 98%;
-  width: 95%;
+#top-bar {
+  height: 0;
 }
 
-
-#timeline {
-  z-index: 10;
-  width: 0px;
-  height: 0px;
+#play-options {
+  position: absolute;
+  padding: 0;
 }
+
+#slider {
+  width: 85%;
+}
+
 
 #nav-bar {
   background-color: rgba(0, 0, 0, 0);
-  width: 600px;
   outline: none;
 }
-#top-bar {
-  z-index: 1000;
-}
+
 #menu-options{
   background-color: rgba(20, 21, 22, 0.0);
 }

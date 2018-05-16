@@ -3,6 +3,9 @@
 <v-container
   id='contain'
   fluid>
+  <Timeline
+  id="timeline"
+  ></Timeline>
   <div id="plotter"></div>
 </v-container>
 </template>
@@ -10,9 +13,12 @@
 /* eslint-disable */
  import {mapGetters} from 'vuex'
 import Plotly from 'plotly.js'
-// import imageDataURI from 'image-data-uri'
+import Timeline from '@/components/Timeline.vue'
 
 export default {
+  components: {
+    'Timeline': Timeline
+  },
   watch: {
     sliderState:{
       handler(val){
@@ -76,19 +82,19 @@ export default {
   methods: {
     playFunc () {
       let self = this
-      this.playLooper = window.setInterval(()=>this.sliderState++, 22)
+      this.playLooper = window.setInterval(()=>this.sliderState++, 6)
     },
     sliderAnimator(sliderVal){
       Plotly.animate('plotter', [this.aframes[sliderVal].name],{
         frame: 
             {
-              duration: 1,
+              duration: 0,
               redraw: false
               }
         ,
         transition: 
           {
-            duration: 1,
+            duration: 0,
           }
         ,
         mode: 'immediate'
@@ -134,8 +140,20 @@ export default {
     
     //check if frames has already been populated
     if(this.aframes.length < this.trackingData['balltrackingdata'].length){
-    
+      console.log(this.trackingData)
     for(var i = 0; i < this.trackingData['balltrackingdata'].length; i++){
+      let offensePlayersx = []
+      let offensePlayersy = []
+      let defensePlayersx = []
+      let defensePlayersy = []
+    for(let j = 0; j < this.trackingData.playerroles.offense.length; j++){
+      offensePlayersx.push(this.trackingData['playertrackingdata'][j]['playertracking'][i]['x'])
+      offensePlayersy.push(this.trackingData['playertrackingdata'][j]['playertracking'][i]['y'])
+    }
+    for(let j = this.trackingData.playerroles.offense.length; j <this.trackingData.playerroles.offense.length + this.trackingData.playerroles.defense.length; j++){
+      defensePlayersx.push(this.trackingData['playertrackingdata'][j]['playertracking'][i]['x'])
+      defensePlayersy.push(this.trackingData['playertrackingdata'][j]['playertracking'][i]['y'])
+    }
   this.aframes.push({
     data: [
       {
@@ -151,69 +169,27 @@ export default {
   {
     mode: 'markers+text',
       name: 'Offense',
-      x: 
-  [this.trackingData['playertrackingdata'][0]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][1]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][2]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][3]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][4]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][5]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][6]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][7]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][8]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][9]['playertracking'][i]['x']],
-  y:
-  [this.trackingData['playertrackingdata'][0]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][1]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][2]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][3]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][4]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][5]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][6]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][7]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][8]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][9]['playertracking'][i]['y']],
+      x: offensePlayersx,
+      y: offensePlayersy,
        marker: {
         color: 'red',
         size: 20
       }
   },{
     mode: 'markers+text',
-  name: 'Defense',
-  x: 
-  [this.trackingData['playertrackingdata'][10]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][11]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][12]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][13]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][14]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][15]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][16]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][17]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][18]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][19]['playertracking'][i]['x'],
-  this.trackingData['playertrackingdata'][20]['playertracking'][i]['x']],
-  y:
-  [this.trackingData['playertrackingdata'][10]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][11]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][12]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][13]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][14]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][15]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][16]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][17]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][18]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][19]['playertracking'][i]['y'],
-  this.trackingData['playertrackingdata'][20]['playertracking'][i]['y']],
-  marker: {
-    color: 'blue',
-    size: 20
+    name: 'Defense',
+    x: defensePlayersx,
+    y: defensePlayersy,
+    marker: {
+      color: 'blue',
+      size: 20
   }
   },
   {
     mode: 'markers+text',
       name: 'Ball',
-      x: [this.trackingData['balltrackingdata'][i]['simulated_ball_x']],
-      y: [this.trackingData['balltrackingdata'][i]['simulated_ball_y']],
+      x: [this.trackingData['balltrackingdata'][i]['simulated_ball'].x],
+      y: [this.trackingData['balltrackingdata'][i]['simulated_ball'].y],
       marker: {
         color: 'brown',
         size: 16
@@ -222,6 +198,7 @@ export default {
 ],
     name: i.toString()
   })
+  console.log(offensePlayersx, offensePlayersy, defensePlayersx, defensePlayersy)
 }
 }
     // ===================================
@@ -659,14 +636,20 @@ NumMachine()
 </script>
 
 <style scoped>
-
+#timeline {
+  position: absolute;
+  z-index: 1000;
+  height: 100vh;
+}
+#timeline[data-v-8eeda45e]{
+  width: 100%;
+}
 #contain {
   padding: 0 0;
   width: 100%;
-  height: 80vh;
+  height: 90vh;
 }
 #plotter {
-  margin-top: 5.5em;
   margin-bottom: 0px;
   padding: 0px;
   width: 100%;

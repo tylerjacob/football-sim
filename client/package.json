@@ -21,6 +21,7 @@
     "plotly.js": "^1.36.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vue-slider-component": "^2.6.2",
     "vuetify": "^1.0.13",
     "vuex": "^3.0.1"
   },

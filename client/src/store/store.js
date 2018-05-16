@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    currentPage: null,
     trackingData: false,
     sliderTime: 0,
     btnState: false,
@@ -22,6 +23,9 @@ export const store = new Vuex.Store({
     },
     maxTime (state) {
       return state.maxTime
+    },
+    currentPage(state){
+      return state.currentPage
     }
   },
   mutations: {
