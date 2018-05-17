@@ -9,8 +9,12 @@ export const store = new Vuex.Store({
     trackingData: false,
     sliderTime: 0,
     btnState: false,
-    maxTime: 0
+    maxTime: 0,
+    offenseVisible: true,
+    defenseVisible: true
   },
+
+  // v-if="filesLoaded === true" :items="files" v-model="a1" item-text="name" label="Select Play"
   getters: {
     sliderTime (state) {
       return state.sliderTime
@@ -24,8 +28,14 @@ export const store = new Vuex.Store({
     maxTime (state) {
       return state.maxTime
     },
-    currentPage(state){
+    currentPage (state) {
       return state.currentPage
+    },
+    offenseVisible(state){
+      return state.offenseVisible
+    },
+    defenseVisible(state){
+      return state.defenseVisible
     }
   },
   mutations: {
@@ -53,12 +63,17 @@ export const store = new Vuex.Store({
     playFunc (state, Timer) {
       state.sliderTime++
     },
-    resetTime(state){
+    resetTime (state) {
       state.sliderTime = 0
     },
-    adjustSlider(state, adjusted){
+    adjustSlider (state, adjusted) {
       state.sliderTime = adjusted
+    },
+    offenseHandler(state, val){
+      state.offenseVisible = val
+    },
+    defenseHandler(state, val){
+      state.defenseVisible = val
     }
-    
   }
 })

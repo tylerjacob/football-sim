@@ -5,23 +5,37 @@
      <h1>General Controls</h1>
      <v-flex offset-xs1>
          <v-flex offset-xs2>
-             <v-switch hide-details color='green' label="All Players" v-model="allPlayers"></v-switch>
+             <v-switch  color='green' label="All Players" v-model="allPlayers"></v-switch>
          </v-flex>
     <v-layout row>
             <v-switch color='green' label="Offense" v-model="showOffense"></v-switch>
             <v-switch color='green' label="Defense" v-model="showDefense"></v-switch>
      </v-layout>
      </v-flex>
+     <v-divider></v-divider>
      <p>Player Labels</p>
-     <v-flex offset-xs1> 
+     <v-flex offset-xs1>
      <v-layout row>
       <v-switch color='green' label="Jersey #" v-model="jerseyNum" ></v-switch>
       <v-switch color='green' label="Position" v-model="position" ></v-switch>
      </v-layout>
      </v-flex>
+    <v-divider></v-divider>
+    <p>Display Options</p>
+    <v-flex offset-xs1>
+    <v-layout row>
+      <v-switch color='green' label="QB View" v-model="QBView"></v-switch>
+      <v-switch color='green' label="Ball Track" v-model="ballTrack" ></v-switch>
+     </v-layout>
+     <v-layout row>
+      <v-switch color='green' label="Off Play" v-model="offPlay" ></v-switch>
+      <v-switch color='green' label="Def Play" v-model="defPlay" ></v-switch>
+     </v-layout>
+     </v-flex>
+     <v-divider></v-divider>
      <p>Single Player Selection</p>
         <v-layout row>
-            <v-flex offset-xs1 xs7
+        <v-flex offset-xs1 xs7
         align-start>
             <p class="player-toggle-title" justify-left>{{headers[0].text}}</p>
     <v-switch hide-details color='red' :label="offense[0].position + ' #' + offense[0].jersey" v-model="offense[0].playing"></v-switch>
@@ -53,17 +67,6 @@
         </v-flex>
     </v-layout>
     <br>
-    <p>Display Options</p>
-    <v-flex offset-xs1>
-    <v-layout row>
-      <v-switch color='green' label="QB View" v-model="QBView"></v-switch>
-      <v-switch color='green' label="Ball Track" v-model="ballTrack" ></v-switch>
-     </v-layout>
-     <v-layout row>
-      <v-switch color='green' label="Off Play" v-model="offPlay" ></v-switch>
-      <v-switch color='green' label="Def Play" v-model="defPlay" ></v-switch>
-     </v-layout>
-     </v-flex>
   </v-container>
 </template>
 
@@ -71,7 +74,7 @@
 import {mapGetters} from 'vuex'
 
 export default {
-    computed: {
+  computed: {
     ...mapGetters({
       sliderTime: 'sliderTime',
       btnState: 'btnState',
@@ -79,109 +82,111 @@ export default {
       maxTime: 'maxTime'
     })
   },
-    data(){
-        return {
-            allPlayers: true,
-            showOffense: true,
-            showDefense: true,
-            headers: [
-                {
-                    text: 'Offense',
-                    align: 'left',
-                    sortable: false,
-                    value: 'name'
-                },
-                {
-                    text: 'Defense',
-                    align: 'right',
-                    sortable: false,
-                    value: 'name'
-                }
-            ],
-            offense: [
-                {position:'QB',  playing:true, jersey: 15}, 
-                {position:'WR',  playing:true, jersey: 12}, 
-                {position:'RB',  playing:true, jersey: 12}, 
-                {position:'TE',  playing:true, jersey: 12}, 
-                {position:'TE',  playing:true, jersey: 12}, 
-                {position:'WR',  playing:true, jersey: 12}, 
-                {position:'OT',  playing:true, jersey: 12}, 
-                {position:'G' ,  playing:true, jersey: 12}, 
-                {position:'C' ,  playing:true, jersey: 12}, 
-                {position:'G' ,  playing:true, jersey: 12}, 
-                {position:'OT',  playing:true, jersey: 12},       
-                ],
-            defense: [
-                {position: 'CB1',playing:true, jersey: 15},
-                {position: 'CB2',playing:true, jersey: 12},
-                {position: 'CB3',playing:true, jersey: 12},
-                {position: 'S'  ,playing:true, jersey: 12},
-                {position: 'S'  ,playing:true, jersey: 12},
-                {position: 'LB' ,playing:true, jersey: 12},
-                {position: 'LB' ,playing:true, jersey: 12},
-                {position: 'DE' ,playing:true, jersey: 12},
-                {position: 'DT' ,playing:true, jersey: 12},
-                {position: 'DE' ,playing:true, jersey: 12},
-                {position: 'LB' ,playing:true, jersey: 12}
-                ],
-            jerseyNum: true,
-            position: true,
-            QBView: true,
-            ballTrack: true,
-            offPlay: true,
-            defPlay: true
-        }
-    },
-    watch: {
-        showDefense: {
-            handler (val) {
-                if(val === false){
-                    this.defenseOff()
-                } else {
-                    this.defenseOn()
-                }
-            },
-        deep: true
+  data () {
+    return {
+      allPlayers: true,
+      showOffense: true,
+      showDefense: true,
+      headers: [
+        {
+          text: 'Offense',
+          align: 'left',
+          sortable: false,
+          value: 'name'
         },
-        showOffense: {
-            handler (val) {
-                if(val === false){
-                    this.offenseOff()
-                } else {
-                    this.offenseOn()
-                }
-            },
-        deep: true
-        },
-        jerseyNum: {
-            handler (val) {
-                
-            },
-        deep: true
+        {
+          text: 'Defense',
+          align: 'right',
+          sortable: false,
+          value: 'name'
         }
+      ],
+      offense: [
+        {position: 'QB', playing: true, jersey: 15},
+        {position: 'WR', playing: true, jersey: 12},
+        {position: 'RB', playing: true, jersey: 12},
+        {position: 'TE', playing: true, jersey: 12},
+        {position: 'TE', playing: true, jersey: 12},
+        {position: 'WR', playing: true, jersey: 12},
+        {position: 'OT', playing: true, jersey: 12},
+        {position: 'G', playing: true, jersey: 12},
+        {position: 'C', playing: true, jersey: 12},
+        {position: 'G', playing: true, jersey: 12},
+        {position: 'OT', playing: true, jersey: 12}
+      ],
+      defense: [
+        {position: 'CB1', playing: true, jersey: 15},
+        {position: 'CB2', playing: true, jersey: 12},
+        {position: 'CB3', playing: true, jersey: 12},
+        {position: 'S', playing: true, jersey: 12},
+        {position: 'S', playing: true, jersey: 12},
+        {position: 'LB', playing: true, jersey: 12},
+        {position: 'LB', playing: true, jersey: 12},
+        {position: 'DE', playing: true, jersey: 12},
+        {position: 'DT', playing: true, jersey: 12},
+        {position: 'DE', playing: true, jersey: 12},
+        {position: 'LB', playing: true, jersey: 12}
+      ],
+      jerseyNum: true,
+      position: true,
+      QBView: true,
+      ballTrack: true,
+      offPlay: true,
+      defPlay: true
+    }
+  },
+  watch: {
+    showDefense: {
+      handler (val) {
+          this.$store.commit('defenseHandler', val)
+        if (val === false) {
+          this.defenseOff()
+        } else {
+          this.defenseOn()
+        }
+      },
+      deep: true
     },
+    showOffense: {
+      handler (val) {
+          this.$store.commit('offenseHandler', val)
+        if (val === false) {
+          this.offenseOff()
+        } else {
+          this.offenseOn()
+        }
+      },
+      deep: true
+    },
+    jerseyNum: {
+      handler (val) {
+
+      },
+      deep: true
+    }
+  },
   methods: {
-      defenseOff () {
-          console.log(this.trackingData.teamroster.offense[0].jersey)
-        for(let i of this.defense){
-            i.playing = false
-        }
-      },
-      defenseOn () {
-        for(let i of this.defense){
-            i.playing = true
-        }
-      },
-      offenseOff () {
-        for(let i of this.offense){
-            i.playing = false
-        }
-      },
-      offenseOn () {
-        for(let i of this.offense){
-            i.playing = true
-        }
+    defenseOff () {
+      console.log(this.trackingData.teamroster.offense[0].jersey)
+      for (let i of this.defense) {
+        i.playing = false
       }
+    },
+    defenseOn () {
+      for (let i of this.defense) {
+        i.playing = true
+      }
+    },
+    offenseOff () {
+      for (let i of this.offense) {
+        i.playing = false
+      }
+    },
+    offenseOn () {
+      for (let i of this.offense) {
+        i.playing = true
+      }
+    }
   }
 }
 </script>

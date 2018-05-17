@@ -1,10 +1,11 @@
 <template>
 <div>
   <v-container id="top-bar"
-  :style="{'margin-top':45 + '%'}">
+  :style="{'margin-top':90 + 'vh'}">
     <v-layout>
       <v-toolbar
           id="timeline-bar"
+          width="85%"
           height="50%"
           color="blue-grey darken-3">
         <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
@@ -13,7 +14,7 @@
         <v-btn class="menu-btn" color="blue-grey lighten-5" @click="clickMaster">
           <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
         </v-btn>
-        <v-flex xl10>
+        <v-flex xs-10>
         <vueSlider
         id="slider"
         :realTime='true'
@@ -42,12 +43,12 @@
     light
     id="play-options"
     absolute
-    height="550px">
+    height="50vh">
     <AnimationOptions/>
     </v-navigation-drawer>
   </div>
   </div>
-  
+
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -162,17 +163,13 @@ div.btn__content {
 
 #top-bar {
   height: 0;
+  padding: 0;
 }
 
 #play-options {
   position: absolute;
   padding: 0;
 }
-
-#slider {
-  width: 85%;
-}
-
 
 #nav-bar {
   background-color: rgba(0, 0, 0, 0);

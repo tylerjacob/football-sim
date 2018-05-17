@@ -12,24 +12,27 @@
         <v-btn slot="activator" color="blue-grey darken-3" dark><i class="material-icons">scatter_plot</i></v-btn>
          <v-card>
         <v-list @hover="hoverMachine">
-         <v-list-tile class="menu-item" @click="setPlayAnimation">
+          <v-list-tile class="menu-item">
            <form enctype="multiple/form-data">
                 <input class="inputfile" type="file" webkitdirectory multiple @change="loadFiles" id="selectFiles">
                 Choose Folder
-                <br>
-                Select File
           </form>
         </v-list-tile>
+        <v-select v-if="filesLoaded === true" label="Select Play" :items="plays"></v-select>
+         <v-divider></v-divider>
+         <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayAnimation">
+           Play Animation
+        </v-list-tile>
         <v-divider></v-divider>
-        <v-list-tile class="menu-item" @click="setPlayInformation">
+        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayInformation">
           Play Information
         </v-list-tile>
         <v-divider></v-divider>
-        <v-list-tile class="menu-item" @click="setQBPerformance">
+        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setQBPerformance">
           QB Performance
         </v-list-tile>
         <v-divider></v-divider>
-        <v-list-tile class="menu-item" @click="setSessionStatistics">
+        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setSessionStatistics">
           Session Statistics
           </v-list-tile>
         </v-list>
@@ -47,6 +50,8 @@ import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
+      a1: null,
+      filesLoaded: false,
       items: [
         {title: 'Play Animation'},
         {title: 'Play Information'},
@@ -55,7 +60,8 @@ export default {
       ],
       fileinput: '',
       parsedJsonArray: [],
-      stringJSON: ''
+      stringJSON: '',
+      plays: []
     }
   },
   computed: mapGetters({
@@ -112,7 +118,6 @@ export default {
 
       // ball tracking data
       let balltrack = []
-      console.log("this works!")
       for (let j of parsed['balltrackingdata']) {
         let ball = {}
         ball.sim_time = j['sim_time'] - mint
@@ -123,7 +128,6 @@ export default {
         // add to time stamp
         balltrack.push(ball)
       }
-      console.log("MARKER")
       // amend data section
       parsed['balltrackingdata'] = balltrack
 
@@ -141,6 +145,8 @@ export default {
         qbTrack.push(qb)
       }
       parsed['qbtrackingdata'] = qbTrack
+      this.plays.push(parsed)
+      console.log(this.plays)
       // return jsons
       this.$store.commit('settingJson', parsed)
       this.$store.commit('setMaxTime', parsed.balltrackingdata.length - 1)
@@ -191,6 +197,7 @@ export default {
         }
         fr.readAsText(file)
       }
+      this.filesLoaded = true
     },
     loadFiles (e) {
       if (window.File && window.FileReader && window.FileList && window.Blob) {

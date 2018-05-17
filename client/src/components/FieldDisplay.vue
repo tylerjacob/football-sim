@@ -15,17 +15,17 @@
 import Plotly from 'plotly.js'
 import Timeline from '@/components/Timeline.vue'
 
-export default {
+export default { //fsgd
   components: {
     'Timeline': Timeline
   },
   watch: {
-    sliderState:{
-      handler(val){
-        this.sliderAnimator(val)
-      },
-      deep: true
-    },
+    // sliderState:{
+    //   handler(val){
+    //     this.sliderAnimator(val)
+    //   },
+    //   deep: true
+    // },
     sliderTime:{
       handler (val) {
         this.sliderState = this.sliderTime
@@ -77,7 +77,9 @@ export default {
     sliderTime: 'sliderTime',
     btnState: 'btnState',
     trackingData: 'trackingData',
-    maxTime: 'maxTime'
+    maxTime: 'maxTime',
+    offenseVisible: 'offenseVisible',
+    defenseVisible: 'offenseVisible'
   }),
   methods: {
     playFunc () {
@@ -88,13 +90,13 @@ export default {
       Plotly.animate('plotter', [this.aframes[sliderVal].name],{
         frame: 
             {
-              duration: 0,
-              redraw: false
+              duration: 4,
+              redraw: true
               }
         ,
         transition: 
           {
-            duration: 0,
+            duration: 4,
           }
         ,
         mode: 'immediate'
@@ -140,7 +142,6 @@ export default {
     
     //check if frames has already been populated
     if(this.aframes.length < this.trackingData['balltrackingdata'].length){
-      console.log(this.trackingData)
     for(var i = 0; i < this.trackingData['balltrackingdata'].length; i++){
       let offensePlayersx = []
       let offensePlayersy = []
@@ -171,6 +172,7 @@ export default {
       name: 'Offense',
       x: offensePlayersx,
       y: offensePlayersy,
+      visible: this.offenseVisible,
        marker: {
         color: 'red',
         size: 20
@@ -180,9 +182,10 @@ export default {
     name: 'Defense',
     x: defensePlayersx,
     y: defensePlayersy,
+    visible: this.defenseVisible,
     marker: {
       color: 'blue',
-      size: 20
+      size: 20,
   }
   },
   {
@@ -198,7 +201,6 @@ export default {
 ],
     name: i.toString()
   })
-  console.log(offensePlayersx, offensePlayersy, defensePlayersx, defensePlayersy)
 }
 }
     // ===================================
@@ -639,7 +641,8 @@ NumMachine()
 #timeline {
   position: absolute;
   z-index: 1000;
-  height: 100vh;
+  height: 0vh;
+  width: 100%;
 }
 #timeline[data-v-8eeda45e]{
   width: 100%;
@@ -647,7 +650,7 @@ NumMachine()
 #contain {
   padding: 0 0;
   width: 100%;
-  height: 90vh;
+  height: 85vh;
 }
 #plotter {
   margin-bottom: 0px;

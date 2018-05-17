@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div id="app">
   <v-app>
     <Menu id="menu"></Menu>
@@ -7,6 +8,11 @@
       <!-- <router-view/> -->
   </v-app>
 </div>
+=======
+  <div id="app">
+    <router-view/>
+  </div>
+>>>>>>> 8e2be1ca5b19da6241609c08e42e7c7d096897b3
 </template>
 
 <script>
