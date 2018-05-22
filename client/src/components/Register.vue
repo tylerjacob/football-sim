@@ -1,5 +1,5 @@
 <template>
-    
+
   <v-app id="inspire">
     <v-content>
       <v-container fluid fill-height>
@@ -37,7 +37,7 @@
       </v-container>
     </v-content>
   </v-app>
-       
+
 </template>
 
 <script>

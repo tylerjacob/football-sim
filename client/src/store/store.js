@@ -6,6 +6,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     currentPage: null,
+    playChanger: false,
     trackingData: false,
     sliderTime: 0,
     btnState: false,
@@ -31,11 +32,14 @@ export const store = new Vuex.Store({
     currentPage (state) {
       return state.currentPage
     },
-    offenseVisible(state){
+    offenseVisible (state) {
       return state.offenseVisible
     },
-    defenseVisible(state){
+    defenseVisible (state) {
       return state.defenseVisible
+    },
+    playChanger (state) {
+      return state.playChanger
     }
   },
   mutations: {
@@ -69,11 +73,18 @@ export const store = new Vuex.Store({
     adjustSlider (state, adjusted) {
       state.sliderTime = adjusted
     },
-    offenseHandler(state, val){
+    offenseHandler (state, val) {
       state.offenseVisible = val
     },
-    defenseHandler(state, val){
+    defenseHandler (state, val) {
       state.defenseVisible = val
+    },
+    updatePlay (state, val) {
+      state.trackingData = val
+      console.log(state.trackingData)
+    },
+    changeCurrentPage (state, val) {
+      state.currentPage = val
     }
   }
 })

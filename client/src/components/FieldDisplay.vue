@@ -3,7 +3,7 @@
 <v-container
   id='contain'
   fluid>
-  <Timeline
+  <Timeline v-if="trackingData"
   id="timeline"
   ></Timeline>
   <div id="plotter"></div>
@@ -29,7 +29,7 @@ export default { //fsgd
     sliderTime:{
       handler (val) {
         this.sliderState = this.sliderTime
-        if(val === 135){
+        if(val === this.maxTime){
           clearInterval(this.playLooper)
           this.$store.commit('resetTime')
         } else {
@@ -91,7 +91,7 @@ export default { //fsgd
         frame: 
             {
               duration: 4,
-              redraw: true
+              redraw: false
               }
         ,
         transition: 
@@ -139,7 +139,7 @@ export default { //fsgd
   mounted () {
     this.$store.commit('fieldStart')
 
-    
+    this.$store.commit('setMaxTime', this.trackingData.balltrackingdata.length - 1)
     //check if frames has already been populated
     if(this.aframes.length < this.trackingData['balltrackingdata'].length){
     for(var i = 0; i < this.trackingData['balltrackingdata'].length; i++){
@@ -207,68 +207,6 @@ export default { //fsgd
     //            Field Set Up
     // ===================================
     
-
-//outerfield lines
-this.masterShapeHolder.push({
-  // sides
-          type: 'rect',
-          layer: 'below',
-          xref: 'x',
-          x0: -26.6,
-          x1: -27.6,
-          yref: 'y',
-          y0: -60,
-          y1: 60,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-        {
-          type: 'rect',
-          layer: 'below',
-          xref: 'x',
-          x0: 26.6,
-          x1: 27.6,
-          yref: 'y',
-          y0: -60,
-          y1: 60,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-    //top&bottom
-        {
-          type: 'rect',
-          layer: 'below',
-          xref: 'x',
-          x0: -27.6,
-          x1: 27.6,
-          yref: 'y',
-          y0: -60,
-          y1: -61,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        },
-        {
-          type: 'rect',
-          layer: 'below',
-          xref: 'x',
-          x0: -27.6,
-          x1: 27.6,
-          yref: 'y',
-          y0: 60,
-          y1: 61,
-          fillcolor: '#ffffff',
-          line: {
-            color: "#ffffff"
-          }
-        }
-        )
-
 const hashWidth = .666
 const hashDistance = 3.08
 const hashHeight = .111
@@ -421,6 +359,99 @@ let YardMachine = () => {
   }
 }
 YardMachine()
+//outerfield lines and first down lines
+let yardline = this.trackingData.balltrackingdata["0"].simulated_ball.y
+console.log(this.trackingData.balltrackingdata["0"].simulated_ball.y, this.trackingData.playsituation.distance)
+let firstDown = this.trackingData.balltrackingdata["0"].simulated_ball.y + this.trackingData.playsituation.distance
+this.masterShapeHolder.push({
+  // sides
+          
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -26.6,
+          x1: -27.6,
+          yref: 'y',
+          y0: -60,
+          y1: 60,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        {
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: 26.6,
+          x1: 27.6,
+          yref: 'y',
+          y0: -60,
+          y1: 60,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+    //top&bottom
+        {
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -27.6,
+          x1: 27.6,
+          yref: 'y',
+          y0: -60,
+          y1: -61,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        {
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -27.6,
+          x1: 27.6,
+          yref: 'y',
+          y0: 60,
+          y1: 61,
+          fillcolor: '#ffffff',
+          line: {
+            color: "#ffffff"
+          }
+        },
+        // first down markers
+        {
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -26.6,
+          x1: 26.6,
+          yref: 'y',
+          y0: yardline,
+          y1: yardline + hashHeight,
+          fillcolor: 'rgba(0,40,133,.5)',
+          line: {
+            color: "rgba(0,40,133,.7)"
+          }
+        },
+        {
+          type: 'rect',
+          layer: 'below',
+          xref: 'x',
+          x0: -26.6,
+          x1: 26.6,
+          yref: 'y',
+          y0: firstDown,
+          y1: firstDown + hashHeight,
+          fillcolor: 'rgba(245,236,0,.5)',
+          line: {
+            color: 'rgba(245,236,0,.5)'
+          }
+        }
+        )
 
 
 let NumMachine = () => {
@@ -444,7 +475,7 @@ let NumMachine = () => {
     this.masterNumHolder.push({
 //zeros
       //right
-        layer: 'above',
+        layer: 'below',
         x: 12,
         y: -38.2 + cnt,
         sizex: numberSize,
@@ -456,7 +487,7 @@ let NumMachine = () => {
       },
       //left
       {
-        layer: 'above',
+        layer: 'below',
         x: -14,
         y: -40.4 + cnt,
         sizex: numberSize,

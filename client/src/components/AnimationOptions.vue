@@ -138,7 +138,7 @@ export default {
   watch: {
     showDefense: {
       handler (val) {
-          this.$store.commit('defenseHandler', val)
+        this.$store.commit('defenseHandler', val)
         if (val === false) {
           this.defenseOff()
         } else {
@@ -149,7 +149,7 @@ export default {
     },
     showOffense: {
       handler (val) {
-          this.$store.commit('offenseHandler', val)
+        this.$store.commit('offenseHandler', val)
         if (val === false) {
           this.offenseOff()
         } else {

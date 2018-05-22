@@ -1,38 +1,55 @@
 <template>
-<<<<<<< HEAD
 <div id="app">
   <v-app>
     <Menu id="menu"></Menu>
       <FieldDisplay
-      v-if="trackingData !== false"/>
+      v-if="show & currentPage === 'playAnimation'"/>
+      <PlayInformation v-if=" currentPage === 'playInformation'"/>
       <!-- <router-view/> -->
   </v-app>
 </div>
-=======
-  <div id="app">
-    <router-view/>
-  </div>
->>>>>>> 8e2be1ca5b19da6241609c08e42e7c7d096897b3
 </template>
 
 <script>
 import FieldDisplay from '@/components/FieldDisplay.vue'
 import {mapGetters} from 'vuex'
 import Menu from '@/components/menu/Menu.vue'
-// import Register from '@/components/Register.vue'
+import PlayInformation from '@/components/menu/PlayInformation.vue'
 
 export default {
   name: 'App',
+  data () {
+    return {
+      show: true
+    }
+  },
+  watch: {
+    trackingData: {
+      handler (val) {
+        var self = this
+        self.show = false
+
+        this.$nextTick(function () {
+          console.log('re-render')
+          self.show = true
+        })
+
+        console.log('test')
+      }
+    }
+  },
   components: {
     'FieldDisplay': FieldDisplay,
-    'Menu': Menu
+    'Menu': Menu,
+    'PlayInformation': PlayInformation
   },
   computed: {
     ...mapGetters({
       sliderTime: 'sliderTime',
       btnState: 'btnState',
       trackingData: 'trackingData',
-      maxTime: 'maxTime'
+      maxTime: 'maxTime',
+      currentPage: 'currentPage'
     })
   },
   methods: {

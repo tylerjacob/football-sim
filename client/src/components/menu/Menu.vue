@@ -18,7 +18,9 @@
                 Choose Folder
           </form>
         </v-list-tile>
-        <v-select v-if="filesLoaded === true" label="Select Play" :items="plays"></v-select>
+        <v-list-tile v-if="filesLoaded === true" class="menu-item" >
+        <v-select v-if="filesLoaded === true" label="Select Play" :items="plays" item-text="name" @change="changePlay"></v-select>
+        </v-list-tile>
          <v-divider></v-divider>
          <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayAnimation">
            Play Animation
@@ -51,6 +53,7 @@ export default {
   data () {
     return {
       a1: null,
+      bool: false,
       filesLoaded: false,
       items: [
         {title: 'Play Animation'},
@@ -58,10 +61,12 @@ export default {
         {title: 'QB Performance'},
         {title: 'Session Statistics'}
       ],
+      dirtyFiles: [],
       fileinput: '',
       parsedJsonArray: [],
       stringJSON: '',
-      plays: []
+      plays: [],
+      cnt: 0
     }
   },
   computed: mapGetters({
@@ -72,6 +77,22 @@ export default {
     currentPage: 'currentPage'
   }),
   methods: {
+    setPlayAnimation () {
+      let val = 'playAnimation'
+      this.$store.commit('changeCurrentPage', val)
+    },
+    setPlayInformation () {
+      let val = 'playInformation'
+      this.$store.commit('changeCurrentPage', val)
+    },
+    setQBPerformance () {
+      let val = 'QBPerformance'
+      this.$store.commit('changeCurrentPage', val)
+    },
+    setSessionStatistics () {
+      let val = 'SessionStatistics'
+      this.$store.commit('changeCurrentPage', val)
+    },
     orientation (xl, yl, xr, yr) {
     // determine angle
       let angle = Math.atan2(yr - yl, xr - xl)
@@ -82,74 +103,77 @@ export default {
     },
     XYDirection (raw) {
       let parsed = JSON.parse(raw)
-      let times = []
-      let plist = []
-      // add sim times
-      for (let i of parsed['balltrackingdata']) {
-        times.push(i['sim_time'])
-      }
-      // calculate minimum sim time
-      let mint = Math.min(times)
-      // player tracking data
-      for (let i of parsed['playertrackingdata']) {
+      if (parsed.balltrackingdata['0'].simulated_ball.x != undefined) {
+        let times = []
+        let plist = []
+        // add sim times
+        for (let i of parsed['balltrackingdata']) {
+          times.push(i['sim_time'])
+        }
+        // calculate minimum sim time
+        let mint = Math.min(times)
+        // player tracking data
+        for (let i of parsed['playertrackingdata']) {
         // initialize players
-        let player = {}
-        player['playerid'] = i['playerid']
-        // initialize tracking
-        let tracking = []
-        for (let m of i['playertracking']) {
+          let player = {}
+          player['playerid'] = i['playerid']
+          // initialize tracking
+          let tracking = []
+          for (let m of i['playertracking']) {
           // # initialize point
-          let loc = {}
-          // calculate locations
-          loc['x'] = -(m['leftshoulder'].x + m['rightshoulder'].x + m['back'].x) / 3 / 91.44
-          loc['y'] = (m['leftshoulder'].y + m['rightshoulder'].y + m['back'].y) / 3 / 91.44
-          loc['dir'] = this.orientation(m['leftshoulder'].x, m['leftshoulder'].y,
-            m['rightshoulder'].x, m['leftshoulder'].y)
-          loc['time'] = m['sim_time'] - mint
-          tracking.push(loc)
+            let loc = {}
+            // calculate locations
+            loc['x'] = -(m['leftshoulder'].x + m['rightshoulder'].x + m['back'].x) / 3 / 91.44
+            loc['y'] = (m['leftshoulder'].y + m['rightshoulder'].y + m['back'].y) / 3 / 91.44
+            loc['dir'] = this.orientation(m['leftshoulder'].x, m['leftshoulder'].y,
+              m['rightshoulder'].x, m['leftshoulder'].y)
+            loc['time'] = m['sim_time'] - mint
+            tracking.push(loc)
+          }
+          // add tracking data
+          player['playertracking'] = tracking
+          plist.push(player)
         }
-        // add tracking data
-        player['playertracking'] = tracking
-        plist.push(player)
-      }
 
-      // amend large data section
-      parsed['playertrackingdata'] = plist
+        // amend large data section
+        parsed['playertrackingdata'] = plist
 
-      // ball tracking data
-      let balltrack = []
-      for (let j of parsed['balltrackingdata']) {
-        let ball = {}
-        ball.sim_time = j['sim_time'] - mint
-        ball.simulated_ball = {}
-        ball.simulated_ball.x = -j.simulated_ball.x / 91.44
-        ball.simulated_ball.y = j.simulated_ball.y / 91.44
-        ball.simulated_ball.z = j.simulated_ball.z / 91.44
-        // add to time stamp
-        balltrack.push(ball)
-      }
-      // amend data section
-      parsed['balltrackingdata'] = balltrack
-
-      // qb tracking data
-      let qbTrack = []
-      for (let j of parsed['qbtrackingdata']) {
-        let qb = {}
-        qb['x'] = -j['hmd_location'].x / 91.44
-        qb['y'] = j['hmd_location'].y / 91.44
-        if (j['hmd_direction'].x < 0) {
-          qb['dir'] = Math.PI + Math.atan(j['hmd_direction'].y / j['hmd_direction'].x)
-        } else {
-          qb['dir'] = Math.atan(j['hmd_direction'].y / j['hmd_direction'].x)
+        // ball tracking data
+        let balltrack = []
+        for (let j of parsed['balltrackingdata']) {
+          let ball = {}
+          ball.sim_time = j['sim_time'] - mint
+          ball.simulated_ball = {}
+          ball.simulated_ball.x = -j.simulated_ball.x / 91.44
+          ball.simulated_ball.y = j.simulated_ball.y / 91.44
+          ball.simulated_ball.z = j.simulated_ball.z / 91.44
+          // add to time stamp
+          balltrack.push(ball)
         }
-        qbTrack.push(qb)
+        // amend data section
+        parsed['balltrackingdata'] = balltrack
+
+        // qb tracking data
+        let qbTrack = []
+        for (let j of parsed['qbtrackingdata']) {
+          let qb = {}
+          qb['x'] = -j['hmd_location'].x / 91.44
+          qb['y'] = j['hmd_location'].y / 91.44
+          if (j['hmd_direction'].x < 0) {
+            qb['dir'] = Math.PI + Math.atan(j['hmd_direction'].y / j['hmd_direction'].x)
+          } else {
+            qb['dir'] = Math.atan(j['hmd_direction'].y / j['hmd_direction'].x)
+          }
+          qbTrack.push(qb)
+        }
+        parsed['qbtrackingdata'] = qbTrack
+        parsed.name = this.dirtyFiles[this.cnt - 1]
+        this.plays.push(parsed)
+        console.log(parsed, this.cnt)
+        console.log(this.dirtyFiles[this.cnt], this.cnt)
+        // return jsons
+        this.$store.commit('settingJson', parsed)
       }
-      parsed['qbtrackingdata'] = qbTrack
-      this.plays.push(parsed)
-      console.log(this.plays)
-      // return jsons
-      this.$store.commit('settingJson', parsed)
-      this.$store.commit('setMaxTime', parsed.balltrackingdata.length - 1)
     },
 
     orderFiles (files) {
@@ -175,6 +199,7 @@ export default {
         for (var j = 0; j < fileHolder.length; j++) {
           if (fileHolder[j]['lastModified'] === orderedDates[i]) {
             orderedFiles.push(fileHolder[j])
+            this.dirtyFiles.push(fileHolder[j].name)
           }
         }
       }
@@ -186,18 +211,48 @@ export default {
       for (let file of files) {
         let self = this
         let fr = new FileReader()
-        fr.onload = (e) => {
-          let jsonResult = e.target.result
-          // add unparsed json string to our data
-          self.stringJSON += jsonResult
-          // adding parsed json to our jsonData as an array of objects
-          self.parsedJsonArray = [...self.parsedJsonArray, JSON.parse(jsonResult)]
-          // running the animation function
-          self.XYDirection(jsonResult)
+        // fr.onload = (e) => {
+        //   let jsonResult = e.target.result
+        //   // add unparsed json string to our data
+        //   self.stringJSON += jsonResult
+        // //   self.cnt++
+        // //   // adding parsed json to our jsonData as an array of objects
+        // //   self.parsedJsonArray = [...self.parsedJsonArray, JSON.parse(jsonResult)]
+        // //   // running the animation function
+        // //   self.XYDirection(jsonResult)
+        // //   if (self.cnt === files.length - 1) {
+        // //     self.filesLoaded = true
+        // //   }
+        // }
+        if (file === files[0]) {
+          fr.onload = (e) => {
+            let jsonResult = e.target.result
+            self.XYDirection(jsonResult)
+          }
         }
+        console.log(file.webkitRelativePath.toString())
+        const getData = () => {
+          let host = 'http://127.0.0.1:8080/data'
+          let data = {json: file.webkitRelativePath.toString()}
+          console.log(data)
+          console.log(JSON.stringify(data))
+          return fetch(host, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            url: host,
+            body: JSON.stringify(data),
+            dataType: 'json'
+            // .then(res => res.json())
+          })
+            .catch(error => console.error('ERROR:', error))
+            .then(response => console.log('success:', response))
+          // return fetch(`http://127.0.0.1:8080/data`)
+            // .then(res => res.json())
+            // .then(posts => console.log(posts))
+        }
+        getData()
         fr.readAsText(file)
       }
-      this.filesLoaded = true
     },
     loadFiles (e) {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
@@ -208,22 +263,27 @@ export default {
       } else {
         alert('The File APIs are not fully supported in this browser. Please use a different browser')
       }
+    },
+
+    changePlay (e) {
+      this.$store.commit('updatePlay', e)
     }
   },
   drawer: null,
   mounted () {
-    var inputs = document.querySelectorAll('.inputfile')
-    Array.prototype.forEach.call(inputs, function (input) {
-      let label	= input.nextElementSibling,
-        labelVal = label.innerHTML
+    console.log(self.stringJSON)
+    // var inputs = document.querySelectorAll('.inputfile')
+    // Array.prototype.forEach.call(inputs, function (input) {
+    //   let label	= input.nextElementSibling,
+    //     labelVal = label.innerHTML
 
-      input.addEventListener('change', function (e) {
-        var fileName = ''
-        if (this.files && this.files.length > 1) { fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length) } else { fileName = e.target.value.split('\\').pop() }
+    //   input.addEventListener('change', function (e) {
+    //     var fileName = ''
+    //     if (this.files && this.files.length > 1) { fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length) } else { fileName = e.target.value.split('\\').pop() }
 
-        if (fileName) { label.querySelector('span').innerHTML = fileName } else { label.innerHTML = labelVal }
-      })
-    })
+    //     if (fileName) { label.querySelector('span').innerHTML = fileName } else { label.innerHTML = labelVal }
+    //   })
+    // })
   }
 }
 

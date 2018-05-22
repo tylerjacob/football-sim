@@ -8,9 +8,9 @@
           width="85%"
           height="50%"
           color="blue-grey darken-3">
-        <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
+        <!-- <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
           <i class="material-icons">menu</i>
-        </v-btn>
+        </v-btn> -->
         <v-btn class="menu-btn" color="blue-grey lighten-5" @click="clickMaster">
           <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
         </v-btn>
@@ -82,7 +82,6 @@ export default {
     },
     sliderDisplay: {
       handler (val) {
-        console.log(this.sliderDisplay)
         if (val === this.maxTime) {
           // this.sliderDisplay = 0
           clearInterval(this.slideTimer)
@@ -102,7 +101,7 @@ export default {
   },
   data () {
     return {
-      drawer: null,
+      drawer: false,
       playBtn: false,
       pauseBtn: true,
       sliderDisplay: 0,
@@ -122,7 +121,6 @@ export default {
       this.$store.commit('clickHandler')
     },
     changeCurrentValue (e) {
-      console.log(e)
       this.sliderDisplay = e
       this.$store.commit('sliderValFromInput', e)
     },
