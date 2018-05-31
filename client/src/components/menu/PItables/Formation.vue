@@ -1,17 +1,19 @@
 <template>
-<div>
-  <v-data-table
-    :headers="headers"
-    :items="offplay"
-    hide-actions
-    class="elevation-1"
-  >
-    <template slot="items" slot-scope="props">
-      <td>{{ props.item.detail }}</td>
-      <td class="text-xs-left">{{ props.item.val }}</td>
-    </template>
-  </v-data-table>
-</div>
+  <div>
+    <v-data-table
+      :headers="headers"
+      :items="play"
+      hide-actions
+      class="elevation-2"
+    >
+      <template slot="items" slot-scope="props">
+        <td>{{ props.item.offDetail }}</td>
+        <td class="text-xs-left">{{ props.item.offVal }}</td>
+        <td>{{ props.item.defDetail }}</td>
+        <td class="text-xs-left">{{ props.item.defVal }}</td>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
@@ -20,62 +22,70 @@ export default {
   computed: {
     ...mapGetters({
       trackingData: 'trackingData',
-      currentPage: 'currentPage'
+      currentPage: 'currentPage',
+      routeData: 'routeData'
     })
   },
   data () {
     return {
-		  headers: [
+      headers: [
         {
-			  text: 'Off Detail',
-			  align: 'left',
-			  sortable: false,
-			  value: 'detail'
+          text: 'Off Detail',
+          align: 'center',
+          sortable: false,
+          value: 'detail'
         },
         { text: 'Off Value', value: 'val', sortable: false, align: 'left' },
         {
-			  text: 'Def Detail',
-			  align: 'left',
-			  sortable: false,
-			  value: 'detail'
+          text: 'Def Detail',
+          align: 'center',
+          sortable: false,
+          value: 'detail'
         },
-        { text: 'Off Value', value: 'val', sortable: false, align: 'left' }
-		  ],
-		  offplay: [
+        { text: 'Def Value', value: 'val', sortable: false, align: 'center' }
+      ],
+      play: [
         {
-			  value: false,
-			  detail: 'Formation',
-			  val: null
-        },
-        {
-			  value: false,
-			  detail: 'Play',
-			  val: null
+          offDetail: 'Formation',
+          offVal: null,
+          defDetail: 'Play',
+          defVal: null
         },
         {
-			  value: false,
-			  detail: 'Play Type',
-			  val: null
+          offDetail: 'Play',
+          offVal: null,
+          defDetail: 'Defensive Personnel',
+          defVal: null
         },
         {
-			  value: false,
-			  detail: 'Offensive Personnel',
-			  val: null
+          offDetail: 'Play Type',
+          offVal: null,
+          defDetail: 'Defensive Basic',
+          defVal: null
         },
         {
-			  value: false,
-			  detail: 'Offensive Basic',
-			  val: null
+          offDetail: 'Offensive Personnel',
+          offVal: null
+        },
+        {
+          offDetail: 'Offensive Basic',
+          offVal: null
         }
-		  ]
+      ]
     }
   },
   methods: {
     fill () {
-      this.offplay[0].val = this.trackingData.playsituation.offplaycall.formation.name
-      this.offplay[1].val = this.trackingData.playsituation.offplaycall.play.name
-      this.offplay[2].val = this.trackingData.playresult.playtype
-      this.offplay[3].val = this.trackingData.playsituation.offplaycall.personnel.name
+      console.log(this.trackingData.playsituation.offplaycall.formation.name)
+      this.play[0].offVal = this.trackingData.playsituation.offplaycall.formation.name
+      this.play[1].offVal = this.trackingData.playsituation.offplaycall.play.name
+      this.play[2].offVal = this.trackingData.playresult.playtype
+      this.play[3].offVal = this.trackingData.playsituation.offplaycall.personnel.name
+      this.play[4].offVal = this.routeData.OffensiveBasic
+
+      this.play[0].defVal = this.trackingData.playsituation.defplaycall.play.name
+      this.play[1].defVal = this.trackingData.playsituation.defplaycall.personnel.name
+      this.play[2].defVal = this.routeData.DefensiveBasic
     }
   },
   mounted () {

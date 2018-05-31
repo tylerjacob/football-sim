@@ -8,9 +8,9 @@
           width="85%"
           height="50%"
           color="blue-grey darken-3">
-        <!-- <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
+        <v-btn class="menu-btn" color="blue-grey lighten-5" @click.stop="drawer = !drawer">
           <i class="material-icons">menu</i>
-        </v-btn> -->
+        </v-btn>
         <v-btn class="menu-btn" color="blue-grey lighten-5" @click="clickMaster">
           <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
         </v-btn>
@@ -38,12 +38,12 @@
   </v-container>
   <div id="nav-bar">
     <v-navigation-drawer
-    :style="[{'margin-top':15 + '%'},{'opacity':.85}]"
+    :style="[{'margin-top':25 + '%'},{'opacity':.75}]"
     v-model="drawer"
-    light
+    dark
     id="play-options"
     absolute
-    height="50vh">
+    height="14vh">
     <AnimationOptions/>
     </v-navigation-drawer>
   </div>

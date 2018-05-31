@@ -3,12 +3,12 @@
       :headers="headers"
       :items="defense"
       hide-actions
-      class="elevation-1"
+      class="elevation-2"
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.position }}</td>
-        <td class="text-xs-center">{{ props.item.number }}</td>
-        <td class="text-xs-center">{{ props.item.name }}</td>
+        <td class="text-xs">{{ props.item.number }}</td>
+        <td class="text-xs">{{ props.item.name }}</td>
       </template>
     </v-data-table>
 </template>
@@ -28,12 +28,11 @@ export default {
       headers: [
         {
           text: 'Pos',
-          align: 'left',
-          sortable: false,
+          align: 'center',
           value: 'position'
         },
-        { text: '#', value: 'number', sortable: false, align: 'center' },
-        { text: 'Name', value: 'name', sortable: false, align: 'center' }
+        { text: '#', value: 'number', align: 'center' },
+        { text: 'Name', value: 'name', align: 'center' }
       ],
       defense: []
     }

@@ -5,17 +5,19 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    currentPage: null,
+    currentPage: 'Splash',
     playChanger: false,
+    jsonData: null,
     trackingData: false,
     sliderTime: 0,
     btnState: false,
     maxTime: 0,
-    offenseVisible: true,
-    defenseVisible: true
+    sessionStats: null,
+    routeData: null,
+    releaseData: null,
+    displayOptions: null
   },
 
-  // v-if="filesLoaded === true" :items="files" v-model="a1" item-text="name" label="Select Play"
   getters: {
     sliderTime (state) {
       return state.sliderTime
@@ -26,20 +28,29 @@ export const store = new Vuex.Store({
     trackingData (state) {
       return state.trackingData
     },
+    jsonData (state) {
+      return state.jsonData
+    },
     maxTime (state) {
       return state.maxTime
     },
     currentPage (state) {
       return state.currentPage
     },
-    offenseVisible (state) {
-      return state.offenseVisible
-    },
-    defenseVisible (state) {
-      return state.defenseVisible
-    },
     playChanger (state) {
       return state.playChanger
+    },
+    sessionStats (state) {
+      return state.sessionStats
+    },
+    routeData (state) {
+      return state.routeData
+    },
+    releaseData (state) {
+      return state.releaseData
+    },
+    displayOptions (state) {
+      return state.displayOptions
     }
   },
   mutations: {
@@ -51,11 +62,20 @@ export const store = new Vuex.Store({
       state.sliderTime = input
     },
     // From Menu
-    settingJson (state, jsonData) {
-      state.trackingData = jsonData
+    settingJson (state, data) {
+      state.jsonData = data
     },
     setMaxTime (state, framesLength) {
       state.maxTime = framesLength
+    },
+    setSessionStats (state, stats) {
+      state.sessionStats = stats
+    },
+    setRouteData (state, val) {
+      state.routeData = val
+    },
+    setReleaseData (state, val) {
+      state.releaseData = val
     },
     // From Field
     fieldStart (state) {
@@ -73,18 +93,22 @@ export const store = new Vuex.Store({
     adjustSlider (state, adjusted) {
       state.sliderTime = adjusted
     },
-    offenseHandler (state, val) {
-      state.offenseVisible = val
-    },
-    defenseHandler (state, val) {
-      state.defenseVisible = val
-    },
     updatePlay (state, val) {
       state.trackingData = val
-      console.log(state.trackingData)
     },
     changeCurrentPage (state, val) {
       state.currentPage = val
+    },
+    setDisplayOptions (state, val) {
+      state.displayOptions = val
+    },
+    allPlayersOff (state) {
+      state.displayOptions.player.off = false
+      state.displayOptions.player.def = false
+    },
+    allPlayersOn (state) {
+      state.displayOptions.player.off = true
+      state.displayOptions.player.def = true
     }
   }
 })

@@ -9,37 +9,38 @@
         v-model="menu"
         offsex-x
         color="grey darken-4">
-        <v-btn slot="activator" color="blue-grey darken-3" dark><i class="material-icons">scatter_plot</i></v-btn>
-         <v-card>
-        <v-list @hover="hoverMachine">
-          <v-list-tile class="menu-item">
-           <form enctype="multiple/form-data">
-                <input class="inputfile" type="file" webkitdirectory multiple @change="loadFiles" id="selectFiles">
-                Choose Folder
-          </form>
-        </v-list-tile>
-        <v-list-tile v-if="filesLoaded === true" class="menu-item" >
-        <v-select v-if="filesLoaded === true" label="Select Play" :items="plays" item-text="name" @change="changePlay"></v-select>
-        </v-list-tile>
-         <v-divider></v-divider>
-         <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayAnimation">
-           Play Animation
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayInformation">
-          Play Information
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setQBPerformance">
-          QB Performance
-        </v-list-tile>
-        <v-divider></v-divider>
-        <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setSessionStatistics">
-          Session Statistics
-          </v-list-tile>
-        </v-list>
-
-      </v-card>
+          <v-btn slot="activator" color="blue-grey darken-3" dark><i class="material-icons">scatter_plot</i></v-btn>
+          <v-card>
+            <v-list @hover="hoverMachine">
+              <v-list-tile  class="menu-item">
+                <form enctype="multiple/form-data">
+                      <input class="inputfile" type="file" webkitdirectory multiple @change="loadFiles" id="selectFiles">
+                      Choose Folder
+                </form>
+                <br>
+                <br>
+              </v-list-tile>
+              <v-list-tile v-if="filesLoaded === true" class="menu-item" >
+                <v-select v-if="filesLoaded === true" label="Select Play" :items="plays" item-text="name" @change="changePlay"></v-select>
+              </v-list-tile>
+              <v-divider></v-divider>
+              <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayAnimation">
+                Play Animation
+              </v-list-tile>
+              <v-divider></v-divider>
+              <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setPlayInformation">
+                Play Information
+              </v-list-tile>
+              <v-divider></v-divider>
+              <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setQBPerformance">
+                QB Performance
+              </v-list-tile>
+              <v-divider></v-divider>
+              <v-list-tile v-if="filesLoaded === true" class="menu-item" @click="setSessionStatistics">
+                Session Statistics
+              </v-list-tile>
+            </v-list>
+          </v-card>
         </v-menu>
       </v-flex>
     </v-layout>
@@ -54,6 +55,8 @@ export default {
     return {
       a1: null,
       bool: false,
+      files: [],
+      fileNames: [],
       filesLoaded: false,
       items: [
         {title: 'Play Animation'},
@@ -74,11 +77,13 @@ export default {
     btnState: 'btnState',
     trackingData: 'trackingData',
     maxTime: 'maxTime',
-    currentPage: 'currentPage'
+    currentPage: 'currentPage',
+    jsonData: 'jsonData'
   }),
   methods: {
     setPlayAnimation () {
       let val = 'playAnimation'
+      console.log('Current play set to play Animation')
       this.$store.commit('changeCurrentPage', val)
     },
     setPlayInformation () {
@@ -101,7 +106,7 @@ export default {
       // return value of interest
       return angle
     },
-    XYDirection (raw) {
+    XYDirection (raw, filename) {
       let parsed = JSON.parse(raw)
       if (parsed.balltrackingdata['0'].simulated_ball.x != undefined) {
         let times = []
@@ -167,12 +172,11 @@ export default {
           qbTrack.push(qb)
         }
         parsed['qbtrackingdata'] = qbTrack
-        parsed.name = this.dirtyFiles[this.cnt - 1]
-        this.plays.push(parsed)
-        console.log(parsed, this.cnt)
-        console.log(this.dirtyFiles[this.cnt], this.cnt)
+        parsed.name = filename
+        console.log(parsed.name)
+        console.log(parsed)
+        this.$store.commit('updatePlay', parsed)
         // return jsons
-        this.$store.commit('settingJson', parsed)
       }
     },
 
@@ -207,83 +211,111 @@ export default {
       return orderedFiles
     },
 
-    async jsonLoop (files) {
+    async jsonLoop (files, clickedPlay) {
+      let count = 0
+      console.log(clickedPlay, 'clickedPlay')
       for (let file of files) {
         let self = this
         let fr = new FileReader()
-        // fr.onload = (e) => {
-        //   let jsonResult = e.target.result
-        //   // add unparsed json string to our data
-        //   self.stringJSON += jsonResult
-        // //   self.cnt++
-        // //   // adding parsed json to our jsonData as an array of objects
-        // //   self.parsedJsonArray = [...self.parsedJsonArray, JSON.parse(jsonResult)]
-        // //   // running the animation function
-        // //   self.XYDirection(jsonResult)
-        // //   if (self.cnt === files.length - 1) {
-        // //     self.filesLoaded = true
-        // //   }
-        // }
-        if (file === files[0]) {
+        self.cnt++
+        if (clickedPlay === file.name) {
           fr.onload = (e) => {
             let jsonResult = e.target.result
-            self.XYDirection(jsonResult)
+            this.$store.commit('settingJson', JSON.parse(jsonResult))
+            self.getRouteDetail()
+              .then(jsonData => {
+                let routeData = jsonData
+                self.$store.commit('setRouteData', routeData)
+                console.log(routeData, 'ROUTE')
+              })
+            self.XYDirection(jsonResult, file.name)
+            self.getRelease()
+              .then(jsonData => {
+                let releaseData = jsonData
+                self.$store.commit('setReleaseData', releaseData)
+                console.log(releaseData, 'RELEASE')
+              })
           }
         }
-        console.log(file.webkitRelativePath.toString())
-        const getData = () => {
-          let host = 'http://127.0.0.1:8080/data'
-          let data = {json: file.webkitRelativePath.toString()}
-          console.log(data)
-          console.log(JSON.stringify(data))
-          return fetch(host, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            url: host,
-            body: JSON.stringify(data),
-            dataType: 'json'
-            // .then(res => res.json())
-          })
-            .catch(error => console.error('ERROR:', error))
-            .then(response => console.log('success:', response))
-          // return fetch(`http://127.0.0.1:8080/data`)
-            // .then(res => res.json())
-            // .then(posts => console.log(posts))
-        }
-        getData()
+
+        // }
+        this.fileNames.push(file.webkitRelativePath.toString())
+        this.plays.push(file.name)
+        self.filesLoaded = true
         fr.readAsText(file)
       }
     },
+    getSessionStats () {
+      let self = this
+      let sessionStats = ''
+      let host = '/totalstats'
+      let data = {json: this.fileNames}
+      console.log('JSON SENT', JSON.stringify({filename: this.plays[0]}))
+      return fetch(host, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        url: host,
+        body: JSON.stringify({filename: this.plays[0]}),
+        dataType: 'json'
+      })
+        .catch(error => console.error('ERROR:', error))
+        .then(res => res.json())
+    },
+    getRouteDetail () {
+      let routeDetail = '/receivercalcs'
+      let routeData = ''
+      let data = JSON.stringify(this.jsonData)
+      console.log('THIS IS WHAT IS BEING SENT ROUTE --->', this.jsonData)
+      return fetch(routeDetail, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        url: routeDetail,
+        body: data,
+        dataType: 'json'
+      })
+        .catch(error => console.error('ERROR:', error))
+        .then(res => res.json())
+    },
+    getRelease () {
+      let release = '/release'
+      let releaseData = ''
+      let data = JSON.stringify(this.jsonData)
+      console.log('THIS IS WHAT IS BEING SENT RELEASE--->', this.jsonData)
+      return fetch(release, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        url: release,
+        body: data,
+        dataType: 'json'
+      })
+        .catch(error => console.error('ERROR:', error))
+        .then(res => res.json())
+    },
     loadFiles (e) {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
-        let files = Array.from(e.target.files)
+        this.files = Array.from(e.target.files)
         // sort files
-        this.orderFiles(files)
-        this.jsonLoop(files)
+        // this.files = this.orderFiles(files)
+        this.jsonLoop(this.files, this.files[0].name)
+        this.setPlayAnimation()
+        this.getSessionStats()
+          .then(jsonData => {
+            let sessionStats = jsonData
+            this.$store.commit('setSessionStats', sessionStats)
+            console.log('SESSION STATS', sessionStats)
+          })
       } else {
         alert('The File APIs are not fully supported in this browser. Please use a different browser')
       }
     },
 
     changePlay (e) {
-      this.$store.commit('updatePlay', e)
+      this.jsonLoop(this.files, e)
     }
   },
   drawer: null,
   mounted () {
     console.log(self.stringJSON)
-    // var inputs = document.querySelectorAll('.inputfile')
-    // Array.prototype.forEach.call(inputs, function (input) {
-    //   let label	= input.nextElementSibling,
-    //     labelVal = label.innerHTML
-
-    //   input.addEventListener('change', function (e) {
-    //     var fileName = ''
-    //     if (this.files && this.files.length > 1) { fileName = (this.getAttribute('data-multiple-caption') || '').replace('{count}', this.files.length) } else { fileName = e.target.value.split('\\').pop() }
-
-    //     if (fileName) { label.querySelector('span').innerHTML = fileName } else { label.innerHTML = labelVal }
-    //   })
-    // })
   }
 }
 
