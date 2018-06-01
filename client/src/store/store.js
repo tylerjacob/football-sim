@@ -109,6 +109,13 @@ export const store = new Vuex.Store({
     allPlayersOn (state) {
       state.displayOptions.player.off = true
       state.displayOptions.player.def = true
+    },
+    setJerseyDefault (state) {
+      state.displayOptions.player.jersOrPos = 'jersey'
+    },
+    // TESTING
+    testSessionStats (state) {
+      state.sessionStats = 54345
     }
   }
 })

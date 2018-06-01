@@ -108,9 +108,12 @@ export default {
     },
     XYDirection (raw, filename) {
       let parsed = JSON.parse(raw)
-      if (parsed.balltrackingdata['0'].simulated_ball.x != undefined) {
+      if (parsed.balltrackingdata['0'].simulated_ball.x !== undefined) {
         let times = []
         let plist = []
+        // initialize min and max
+        let miny = parsed.playsituation.los
+        let maxy = parsed.playsituation.los
         // add sim times
         for (let i of parsed['balltrackingdata']) {
           times.push(i['sim_time'])
@@ -134,6 +137,12 @@ export default {
               m['rightshoulder'].x, m['leftshoulder'].y)
             loc['time'] = m['sim_time'] - mint
             tracking.push(loc)
+            // check if min or max exceeded
+            if (loc['y'] + 5 > maxy) {
+              maxy = loc['y'] + 5
+            } else if (loc['y'] - 5 < miny) {
+              miny = loc['y'] - 5
+            }
           }
           // add tracking data
           player['playertracking'] = tracking
@@ -170,7 +179,15 @@ export default {
             qb['dir'] = Math.atan(j['hmd_direction'].y / j['hmd_direction'].x)
           }
           qbTrack.push(qb)
+          // check if min or max exceeded
+          if (qb['y'] + 5 > maxy) {
+            maxy = qb['y'] + 5
+          } else if (qb['y'] - 5 < miny) {
+            miny = qb['y'] - 5
+          }
         }
+        parsed.playresult.maxY = maxy
+        parsed.playresult.minY = miny
         parsed['qbtrackingdata'] = qbTrack
         parsed.name = filename
         console.log(parsed.name)
@@ -212,7 +229,6 @@ export default {
     },
 
     async jsonLoop (files, clickedPlay) {
-      let count = 0
       console.log(clickedPlay, 'clickedPlay')
       for (let file of files) {
         let self = this
@@ -246,10 +262,7 @@ export default {
       }
     },
     getSessionStats () {
-      let self = this
-      let sessionStats = ''
       let host = '/totalstats'
-      let data = {json: this.fileNames}
       console.log('JSON SENT', JSON.stringify({filename: this.plays[0]}))
       return fetch(host, {
         method: 'POST',
@@ -263,7 +276,6 @@ export default {
     },
     getRouteDetail () {
       let routeDetail = '/receivercalcs'
-      let routeData = ''
       let data = JSON.stringify(this.jsonData)
       console.log('THIS IS WHAT IS BEING SENT ROUTE --->', this.jsonData)
       return fetch(routeDetail, {
@@ -278,7 +290,6 @@ export default {
     },
     getRelease () {
       let release = '/release'
-      let releaseData = ''
       let data = JSON.stringify(this.jsonData)
       console.log('THIS IS WHAT IS BEING SENT RELEASE--->', this.jsonData)
       return fetch(release, {
@@ -316,6 +327,8 @@ export default {
   drawer: null,
   mounted () {
     console.log(self.stringJSON)
+    // TESTING PURPOSES ONLY
+    this.$store.commit('testSessionStats')
   }
 }
 
@@ -325,11 +338,11 @@ export default {
 
 .inputfile {
   opacity: 0;
-	position: absolute;
+  position: absolute;
 }
 
 .inputfile + label {
-	cursor: pointer;
+  cursor: pointer;
 }
 .menu-item {
   padding: 0;

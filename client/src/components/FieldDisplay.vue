@@ -31,7 +31,7 @@ export default {
   watch: {
     sliderTime:{
       handler (val) {
-        this.sliderState = this.sliderTime
+        // this.sliderState = this.sliderTime
         if(val === this.maxTime){
           clearInterval(this.playLooper)
           this.$store.commit('resetTime')
@@ -49,7 +49,7 @@ export default {
         if(this.sliderState === this.maxTime){
           this.sliderState = 0
         }
-        this.playFunc()
+        // this.playFunc()
         } 
         else {
         clearInterval(this.playLooper)
@@ -60,7 +60,6 @@ export default {
     },
     displayOptions: {
       handler(val){
-        console.log(val, "from watcher")
         this.displayHandler(val)
       },
       deep: true
@@ -90,7 +89,7 @@ export default {
   methods: {
     playFunc () {
       let self = this
-      this.playLooper = window.setInterval(()=>this.sliderState++, 15)
+      // this.playLooper = window.setInterval(()=>this.sliderState++, 600)
       },
     sliderAnimator(sliderVal){
       Plotly.animate('plotter', [this.aframes[sliderVal].name],{
@@ -128,7 +127,7 @@ export default {
           name: 'Offense',
           x: offensePlayersx,
           y: offensePlayersy,
-          text: offPos,
+          hoverinfo: 'none',
           textfont: {
           color: '#ffffff'
         },
@@ -140,9 +139,9 @@ export default {
       },{
         mode: 'markers+text',
         name: 'Defense',
+        hoverinfo: 'none',
         x: defensePlayersx,
         y: defensePlayersy,
-        text: defPos,
         textfont: {
           color: '#ffffff'
         },
@@ -536,11 +535,15 @@ export default {
       this.aframes = []
       this.offJersey = []
       this.defJersey = []
+      this.offPos = []
+      this.defPos = []
       for(let i = 0; i < this.trackingData.playerroles.offense.length; i++){
         this.offJersey.push(this.trackingData.teamroster.offense[i].jersey)
+        this.offPos.push(this.trackingData.teamroster.offense[i].position.name)
       }
       for(let i = 0; i < this.trackingData.playerroles.defense.length; i++){
         this.defJersey.push(this.trackingData.teamroster.defense[i].jersey)
+        this.defPos.push(this.trackingData.teamroster.defense[i].position.name)
       }
       for(var i = 0; i < this.trackingData['balltrackingdata'].length; i++){
         //init arrs
@@ -567,18 +570,27 @@ export default {
       }
       const show = {
         opacity: '1'
+      // offense off
       }
       if(val.player.off === false){
         Plotly.restyle('plotter', hide, 1)
       } else {
         Plotly.restyle('plotter', show, 1)
       }
+      //defense off
       if(val.player.def === false) {
         Plotly.restyle('plotter', hide, 2)
       } else {
         Plotly.restyle('plotter', show, 2)
       }
-      //if offense turned off
+      //handle jerseys & Position
+      if(val.player.jersOrPos === 'jersey'){
+        Plotly.restyle('plotter', {text: [this.offJersey]}, 1)
+        Plotly.restyle('plotter', {text: [this.defJersey]}, 2)
+      } else if(val.player.jersOrPos === 'position'){
+        Plotly.restyle('plotter', {text: [this.offPos]}, 1)
+         Plotly.restyle('plotter', {text: [this.defPos]}, 2)
+      }
       }
       
 
@@ -613,7 +625,6 @@ export default {
     if(this.aframes.length < this.trackingData['balltrackingdata'].length){
     this.setPlayers()
   }
-  console.log(this.fieldDisplayOptions, "field display option")
     // ===================================
     //            Field Set Up
     // ===================================
@@ -645,17 +656,17 @@ export default {
         fixedrange: true,
         showline: true,
         autotick: true,
-        hoverlabel: true,
+        hoverlabel: false,
         showticklabels: false
       },
       // for deployment: this.routeData.MinY, this.routeData.MaxY
       // for testing: this.trackingData['qbtrackingdata'][this.sliderTime]['y'] -7.5,this.trackingData['qbtrackingdata'][this.sliderTime]['y'] + 20
       yaxis: {
-        range: [this.trackingData['qbtrackingdata'][this.sliderTime]['y'] -7.5,this.trackingData['qbtrackingdata'][this.sliderTime]['y'] + 20],
+        range: [this.trackingData.playresult.minY,this.trackingData.playresult.maxY],
         showgrid: false,
         showlegend: false,
         fixedrange: true,
-        hoverlabel: true,
+        hoverlabel: false,
         zeroline: false,
         ticks: '',
         showline: true,
@@ -676,7 +687,6 @@ export default {
     this.aframes[1] //sample data 1
     this.aframes[2] //sample data 2
 
-
     let self = this
     Plotly.plot('plotter', {
       data: this.aframes[0].data,
@@ -688,6 +698,8 @@ export default {
     window.onresize = function () {
       Plotly.Plots.resize('plotter')
     }
+    console.log(this.displayOptions, "display Options")
+     this.$store.commit('setJerseyDefault')
   }    
 }
 </script>

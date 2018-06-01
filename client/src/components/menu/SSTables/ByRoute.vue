@@ -1,15 +1,15 @@
 <template>
-    <v-data-table :headers="headers" :items="routes" hide-actions class="elevation-2">
-	  <template slot="items" slot-scope="props">
-			<td>{{ props.item.rte }}</td>
-			<td class="text-xs-left">{{ props.item.name }}</td>
-			<td class="text-xs-center">{{ props.item.run }}</td>
-			<td class="text-xs-center">{{ props.item.targeted }}</td>
-			<td class="text-xs-center">{{ props.item.complete }}</td>
-			<td class="text-xs-center">{{ props.item.td }}</td>
-			<td class="text-xs-center">{{ props.item.yds }}</td>
-		  </template>
-	</v-data-table>
+<v-data-table :headers="headers" :items="routes" hide-actions class="elevation-2">
+    <template slot="items" slot-scope="props">
+      <td>{{ props.item.rte }}</td>
+      <td class="text-xs-left">{{ props.item.name }}</td>
+      <td class="text-xs-center">{{ props.item.run }}</td>
+      <td class="text-xs-center">{{ props.item.targeted }}</td>
+      <td class="text-xs-center">{{ props.item.complete }}</td>
+      <td class="text-xs-center">{{ props.item.td }}</td>
+      <td class="text-xs-center">{{ props.item.yds }}</td>
+    </template>
+</v-data-table>
 </template>
 
 <script>
@@ -19,12 +19,7 @@ export default {
   data () {
     return {
       headers: [
-        {
-          text: 'Route',
-          align: 'left',
-          sortable: false,
-          value: 'rte'
-        },
+        { text: 'Route', align: 'left', sortable: false, value: 'rte' },
         { text: 'Name', value: 'name', sortable: false, align: 'left' },
         { text: 'Run', value: 'run', sortable: false, align: 'center' },
         { text: 'Targeted', value: 'targeted', sortable: false, align: 'center' },

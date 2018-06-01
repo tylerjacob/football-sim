@@ -8,7 +8,7 @@
     >
       <template slot="items" slot-scope="props">
         <tr dark :active="props.item.targeted">
-          <td>{{ props.item.receiver }}</td>
+        <td>{{ props.item.receiver }}</td>
         <td class="text-xs">{{ props.item.route }}</td>
         <td class="text-xs">{{ props.item.depth }}</td>
         <td class="text-xs">{{ props.item.maxsep }}</td>
@@ -33,11 +33,11 @@ export default {
   data () {
     return {
       headers: [
-        { text: 'Receiver', align: 'center', sortable: false, value: 'rec'},
-        { text: 'Route', value: 'rte', sortable: false, align: 'center' },
-        { text: 'Depth', value: 'depth', align: 'center', sortable: false},
-        { text: 'Max Separation', value: 'maxsep', sortable: false, align: 'center' },
-        { text: 'Avg Separation', value: 'avgsep', sortable: false, align: 'center' }
+        {text: 'Receiver', align: 'center', sortable: false, value: 'rec'},
+        {text: 'Route', value: 'rte', sortable: false, align: 'center'},
+        {text: 'Depth', value: 'depth', align: 'center', sortable: false},
+        {text: 'Max Separation', value: 'maxsep', sortable: false, align: 'center'},
+        {text: 'Avg Separation', value: 'avgsep', sortable: false, align: 'center'}
       ],
       routes: [
         {
@@ -79,7 +79,6 @@ export default {
     fill () {
       let playerInfo = []
       let offense = this.trackingData.playerroles.offense
-      console.log(offense)
       // set cnt var for index reference
       let count = 0
       for (let i of offense) {
@@ -115,7 +114,6 @@ export default {
           count++
         }
       }
-      console.log(playerInfo, '=========== PLAYER  INFO ===========')
       this.routes = playerInfo
     }
   },
@@ -131,4 +129,3 @@ export default {
   color: white;
 }
 </style>
-

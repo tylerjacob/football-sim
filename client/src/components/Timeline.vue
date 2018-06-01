@@ -15,35 +15,36 @@
           <i class="material-icons">{{btnState ? 'pause' : 'play_arrow'}}</i>
         </v-btn>
         <v-flex xs-10>
-        <vueSlider
-        id="slider"
-        :realTime='true'
-        :tooltip='false'
-        :max="maxTime"
-        @input='changeCurrentValue'
-        v-model="sliderDisplay">
-        </vueSlider>
+          <vueSlider
+          id="slider"
+          :realTime='true'
+          :tooltip='false'
+          :max="maxTime"
+          @input='changeCurrentValue'
+          v-model="sliderDisplay">
+          </vueSlider>
         </v-flex>
         <v-flex xs1>
-        <v-text-field
+          <v-text-field
           :max="maxTime"
           @input='changeCurrentValue'
           color='blue-grey lighten-5'
           :value='sliderDisplay'
           type='number'
-          :suffix='maxTime.toString()'></v-text-field>
+          :suffix='maxTime.toString()'>
+          </v-text-field>
         </v-flex>
       </v-toolbar>
     </v-layout>
   </v-container>
   <div id="nav-bar">
     <v-navigation-drawer
-    :style="[{'margin-top':25 + '%'},{'opacity':.75}]"
+    :style="[{'margin-top':30 + '%'},{'opacity':.75}]"
     v-model="drawer"
     dark
     id="play-options"
     absolute
-    height="14vh">
+    height="18vh">
     <AnimationOptions/>
     </v-navigation-drawer>
   </div>
@@ -113,7 +114,7 @@ export default {
       this.$store.commit('endPlay')
     },
     displayRunner () {
-      this.slideTimer = setInterval(() => { this.sliderDisplay += 1 }, 15)
+      this.slideTimer = setInterval(() => { this.sliderDisplay += 1 }, 22)
     },
     clickMaster () {
       this.playBtn = !this.playBtn

@@ -1,10 +1,10 @@
 <template>
 <v-container mt-0 pt-0>
   <h1 class="page-title">SESSION STATISTICS</h1>
-  <v-layout offset-xs3 v-if="zoneImg === null">
+  <v-layout offset-xs3 v-if="show === false">
     <v-flex pa-3 xs-9>
       <h1 pt-5>Computing Session Stats</h1>
-      <v-progress-linear :indeterminate="true"></v-progress-linear>
+      <v-progress-linear  v-if="show === false" :indeterminate="true"></v-progress-linear>
     </v-flex>
   </v-layout>
   <v-layout v-if="zoneImg !== null" row wrap>
@@ -22,11 +22,11 @@
     </v-flex> -->
     <v-flex pa-3 xs-3>
       <h2>Zone Summary</h2>
-      <img :src="zoneImg" alt="">
+      <img  v-if="sessionStats !== null" :src="zoneImg" alt="">
     </v-flex>
      <v-flex pa-3 xs-3>
       <h2>Target Summary</h2>
-      <img :src="targetImg" alt="">
+      <img  v-if="sessionStats !== null" :src="targetImg" alt="">
     </v-flex>
   </v-layout>
 </v-container>
@@ -43,7 +43,8 @@ export default {
   data () {
     return {
       zoneImg: null,
-      targetImg: null
+      targetImg: null,
+      show: false
     }
   },
   components: {
@@ -56,6 +57,17 @@ export default {
       sessionStats: 'sessionStats'
     })
   },
+  watch: {
+    sessionStats: {
+      handler (val) {
+        console.log(val, 'SESSION STATSSSS')
+        if (val !== null) {
+          this.fill()
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     fill () {
       this.zoneImg = this.sessionStats.zoneimage
@@ -63,7 +75,10 @@ export default {
     }
   },
   mounted () {
-    this.fill()
+    window.setTimeout(() => {
+      console.log('TIMER DONE')
+      this.show = true
+    }, 5000)
   }
 }
 </script>

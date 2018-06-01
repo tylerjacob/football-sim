@@ -1,28 +1,28 @@
 <template>
     <v-container width="50px">
-     <v-flex offset-xs1 pr-0>
-    <v-layout column>
+     <v-flex offset-xs1 >
+    <v-layout row>
             <v-switch color='green' label="Offense" v-model="displayOptions.player.off"></v-switch>
             <v-switch color='green' label="Defense" v-model="displayOptions.player.def"></v-switch>
      </v-layout>
      </v-flex>
-     <!-- <v-divider></v-divider>
+     <v-divider></v-divider>
      <v-flex offset-xs1>
-     <v-layout row pb-2>
-       <v-radio-group row v-model="displayOptions.player.jersOrPos" :mandatory="false">
+     <v-layout row>
+       <v-radio-group row v-model="displayOptions.player.jersOrPos" :mandatory="true">
          <v-radio
-        label="jersey"
+        label="Jersey"
         value="jersey"
         color="green"
       ></v-radio>
       <v-radio
-        label="position"
+        label="Position"
         color="green"
         value="position"
-      ></v-radio> -->
-       <!-- </v-radio-group>
+      ></v-radio>
+       </v-radio-group>
       </v-layout>
-     </v-flex> -->
+     </v-flex>
     <!-- <v-divider></v-divider>
     <v-flex offset-xs1 pt-3>
     <v-layout row>
@@ -80,7 +80,6 @@ export default {
   watch: {
     displayOptions: {
       handler (val) {
-        console.log(val)
         this.$store.commit('setDisplayOptions', val)
       },
       deep: true
@@ -88,6 +87,10 @@ export default {
   },
   methods: {
 
+  },
+  mounted () {
+    let val = this.displayOptions
+    this.$store.commit('setDisplayOptions', val)
   }
 }
 </script>
@@ -106,6 +109,10 @@ div .input-group__details {
 .player-toggle-title {
     font-size: 1.2em;
     padding-right: 3em;
+}
+
+.input-group.input-group--selection-controls .input-group__input {
+  padding-bottom: 50px;
 }
 
 </style>
