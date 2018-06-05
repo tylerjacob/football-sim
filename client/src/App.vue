@@ -14,6 +14,7 @@
 </template>
 
 <script>
+// random comment! 
 import FieldDisplay from '@/components/FieldDisplay.vue'
 import {mapGetters} from 'vuex'
 import Menu from '@/components/menu/Menu.vue'
